@@ -1,34 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { Target, Lightbulb } from 'lucide-react'; // Importamos iconos para Misión/Visión
+import React, { useState, useEffect, useRef } from 'react';
+import { Target, Lightbulb, Users, Utensils, Calendar } from 'lucide-react';
 
-// --- LÓGICA DE CONTADOR ORIGINAL ---
-const AnimatedCounter = ({ end, label }) => {
+// Sub-componente Contador Inteligente
+const SmartCounter = ({ end, label, icon: Icon }) => {
   const [count, setCount] = useState(0);
+  const elementRef = useRef(null);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    let start = 0;
-    const duration = 2000; 
-    const increment = end / (duration / 20); 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          let start = 0;
+          const duration = 2500; 
+          const increment = end / (duration / 30); 
 
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.ceil(start));
-      }
-    }, 20);
-
-    return () => clearInterval(timer);
+          const timer = setInterval(() => {
+            start += increment;
+            if (start >= end) {
+              setCount(end);
+              clearInterval(timer);
+            } else {
+              setCount(Math.ceil(start));
+            }
+          }, 30);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    if (elementRef.current) observer.observe(elementRef.current);
+    return () => observer.disconnect();
   }, [end]);
 
   return (
-    <div className="text-center p-4 transform hover:scale-110 transition-transform duration-300">
-      <div className="text-4xl md:text-5xl font-extrabold text-rose-600 mb-2 font-mono flex justify-center items-center">
-        {count}<span className="text-2xl text-rose-400 ml-1">+</span>
+    <div ref={elementRef} className="flex flex-col items-center p-4 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all transform hover:-translate-y-1">
+      <div className="p-3 bg-rose-50 text-rose-600 rounded-full mb-3">
+        <Icon size={24} />
       </div>
-      <div className="text-gray-600 font-bold uppercase tracking-wide text-xs md:text-sm">{label}</div>
+      <div className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-1 font-mono">
+        {count}+
+      </div>
+      <div className="text-gray-500 font-bold uppercase text-xs tracking-wider">{label}</div>
     </div>
   );
 };
@@ -36,16 +50,15 @@ const AnimatedCounter = ({ end, label }) => {
 const About = () => {
   return (
     <section id="nosotros" className="py-20 container mx-auto px-6 bg-stone-50">
-      <div className="grid md:grid-cols-2 gap-16 items-start"> {/* items-start para mejor alineación con Misión/Visión */}
+      <div className="grid md:grid-cols-2 gap-16 items-start">
         
-        {/* --- COLUMNA IMAGEN (Foto Real) --- */}
+        {/* IMAGEN DE FUNDADORES */}
         <div className="relative group sticky top-24">
           <div className="absolute -top-4 -left-4 w-24 h-24 bg-yellow-400 rounded-full opacity-20 blur-xl group-hover:scale-150 transition-all duration-700"></div>
           <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-600 rounded-full opacity-20 blur-xl group-hover:scale-150 transition-all duration-700"></div>
           
-          {/* FOTO REAL DE LOS FUNDADORES */}
           <img 
-            src="/galeria/20210503_205438.jpg" 
+            src="/galeria/fundadores.jpg" 
             alt="Fundadores Ana y José" 
             className="rounded-3xl shadow-2xl relative z-10 w-full transform rotate-2 group-hover:rotate-0 transition-all duration-500 object-cover min-h-[500px]"
           />
@@ -55,48 +68,44 @@ const About = () => {
           </div>
         </div>
         
-        {/* --- COLUMNA TEXTO --- */}
+        {/* TEXTO + MISIÓN/VISIÓN + CONTADORES */}
         <div>
           <span className="text-rose-600 font-bold uppercase tracking-wider text-sm mb-2 block">Nuestra Esencia</span>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">El Legado de <br/> Ana y José</h2>
           
           <div className="space-y-4 text-lg text-gray-600 leading-relaxed text-justify mb-8">
             <p>
-              Todo comenzó en el corazón de Bogotá, cuando Ana y José, una pareja que dedicó su vida al servicio, notaron cuántos de sus contemporáneos enfrentaban el atardecer de sus vidas en soledad.
-            </p>
-            <p>
-              Lo que inició como almuerzos compartidos, hoy es una fundación sólida. 
-              <strong> No somos un asilo, somos una familia extendida.</strong>
+              Todo comenzó en el corazón de Bogotá, cuando Ana y José notaron cuántos de sus contemporáneos enfrentaban el atardecer de sus vidas en soledad. Lo que inició como almuerzos compartidos, hoy es una familia extendida.
             </p>
           </div>
 
-          {/* --- NUEVA SECCIÓN: MISIÓN Y VISIÓN --- */}
+          {/* TARJETAS MISIÓN Y VISIÓN */}
           <div className="grid sm:grid-cols-2 gap-4 mb-10">
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
                <div className="flex items-center gap-2 mb-2">
-                 <Target className="w-5 h-5 text-rose-500" />
+                 <Target className="w-5 h-5 text-rose-500 group-hover:scale-110 transition-transform" />
                  <h3 className="font-bold text-gray-800">Misión</h3>
                </div>
                <p className="text-sm text-gray-600 leading-snug">
-                 Mejorar la calidad de vida de los adultos mayores vulnerables mediante alimentación digna y compañía afectiva.
+                 Mejorar la calidad de vida de los adultos mayores vulnerables mediante alimentación digna, atención básica y compañía afectiva.
                </p>
             </div>
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
                <div className="flex items-center gap-2 mb-2">
-                 <Lightbulb className="w-5 h-5 text-yellow-500" />
+                 <Lightbulb className="w-5 h-5 text-yellow-500 group-hover:scale-110 transition-transform" />
                  <h3 className="font-bold text-gray-800">Visión</h3>
                </div>
                <p className="text-sm text-gray-600 leading-snug">
-                 Ser una institución líder y autosostenible en Bogotá, fomentando una cultura de respeto hacia nuestros abuelos.
+                 Ser una institución líder y autosostenible en Bogotá, fomentando una cultura de respeto y gratitud hacia nuestros abuelos.
                </p>
             </div>
           </div>
           
-          {/* --- REJILLA DE CONTADORES ORIGINAL --- */}
-          <div className="grid grid-cols-3 gap-2 border-t border-gray-200 pt-8">
-            <AnimatedCounter end={15} label="Años sirviendo" />
-            <AnimatedCounter end={120} label="Abuelos felices" />
-            <AnimatedCounter end={8000} label="Comidas/mes" />
+          {/* CONTADORES (RESTAURADOS) */}
+          <div className="grid grid-cols-3 gap-3 border-t border-gray-200 pt-8">
+            <SmartCounter end={15} label="Años sirviendo" icon={Calendar} />
+            <SmartCounter end={120} label="Abuelos felices" icon={Users} />
+            <SmartCounter end={8500} label="Comidas/mes" icon={Utensils} />
           </div>
         </div>
       </div>

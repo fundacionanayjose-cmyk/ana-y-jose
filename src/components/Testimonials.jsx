@@ -1,82 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
-
-const testimonials = [
-  {
-    id: 1,
-    text: "Desde que llegué a la fundación, mis días volvieron a tener color. La comida es deliciosa, pero el cariño con el que nos tratan alimenta mucho más.",
-    author: "Doña Teresa",
-    role: "Beneficiaria (78 años)"
-  },
-  {
-    id: 2,
-    text: "Apadrinar a Don Roberto ha sido la experiencia más gratificante de mi vida. Saber que mi aporte le da dignidad a su vejez no tiene precio.",
-    author: "Camilo Torres",
-    role: "Padrino Donante"
-  },
-  {
-    id: 3,
-    text: "Aquí encontré amigos con los que puedo jugar parqués y recordar viejos tiempos. Gracias a Ana y José por darnos un segundo hogar.",
-    author: "Don Carlos",
-    role: "Beneficiario (82 años)"
-  }
-];
+import React from 'react';
+import { Quote, Star } from 'lucide-react';
 
 const Testimonials = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Auto-play del carrusel cada 5 segundos
-  useEffect(() => {
-    const timer = setInterval(() => {
-      nextSlide();
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [currentIndex]);
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  };
+  const testimonials = [
+    {
+      id: 1,
+      name: "Doña Teresa",
+      age: "78 años",
+      text: "Antes pasaba días enteros sin hablar con nadie. Aquí encontré amigas, risas y una sopa caliente que me sabe a gloria. Dios bendiga esta casa.",
+      image: "https://images.unsplash.com/photo-1574167389146-24e53e419b48?auto=format&fit=crop&q=80&w=200"
+    },
+    {
+      id: 2,
+      name: "Don Pedro",
+      age: "82 años",
+      text: "Pensé que a mi edad ya no servía para nada. En los talleres de la fundación aprendí a pintar y ahora me siento útil de nuevo.",
+      image: "https://images.unsplash.com/photo-1547841381-8fb544eb4d0a?auto=format&fit=crop&q=80&w=200"
+    },
+    {
+      id: 3,
+      name: "María Fernanda",
+      age: "Voluntaria",
+      text: "Llegué para ayudar por unas horas y me quedé para siempre. El amor que se respira en Ana y José te cambia la vida.",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200"
+    }
+  ];
 
   return (
-    <section className="py-20 bg-stone-100">
-      <div className="container mx-auto px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">Voces de Esperanza</h2>
-        
-        <div className="relative max-w-4xl mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-xl">
-          <Quote className="w-12 h-12 text-rose-200 absolute top-8 left-8" />
-          
-          <div className="relative z-10 min-h-[200px] flex flex-col justify-center items-center transition-opacity duration-500">
-             <p className="text-xl md:text-2xl text-gray-700 italic mb-6 leading-relaxed">
-               "{testimonials[currentIndex].text}"
-             </p>
-             <div className="mt-4">
-               <h4 className="font-bold text-rose-600 text-lg">{testimonials[currentIndex].author}</h4>
-               <span className="text-gray-500 text-sm uppercase tracking-wider">{testimonials[currentIndex].role}</span>
-             </div>
-          </div>
+    <section className="py-24 bg-stone-900 text-white relative overflow-hidden">
+      {/* Fondo decorativo */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+         <div className="absolute top-10 right-10 w-64 h-64 bg-rose-600 rounded-full blur-[100px]"></div>
+         <div className="absolute bottom-10 left-10 w-64 h-64 bg-blue-600 rounded-full blur-[100px]"></div>
+      </div>
 
-          {/* Controles */}
-          <button onClick={prevSlide} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-white p-3 rounded-full shadow-lg hover:text-rose-600 hover:scale-110 transition-all">
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button onClick={nextSlide} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-white p-3 rounded-full shadow-lg hover:text-rose-600 hover:scale-110 transition-all">
-            <ChevronRight className="w-6 h-6" />
-          </button>
-          
-          {/* Puntos indicadores */}
-          <div className="flex gap-2 justify-center mt-8">
-            {testimonials.map((_, idx) => (
-              <button 
-                key={idx}
-                onClick={() => setCurrentIndex(idx)}
-                className={`w-3 h-3 rounded-full transition-all ${idx === currentIndex ? 'bg-rose-600 w-8' : 'bg-gray-300'}`}
-              />
-            ))}
-          </div>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">Voces de Esperanza</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">Historias reales de quienes construyen esta familia día a día.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((item) => (
+            <div key={item.id} className="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 hover:border-rose-500/50 transition-all hover:-translate-y-2">
+              <Quote className="w-10 h-10 text-rose-500 mb-6 opacity-80" />
+              
+              <p className="text-lg text-gray-200 leading-relaxed mb-8 italic">
+                "{item.text}"
+              </p>
+              
+              <div className="flex items-center gap-4">
+                <img src={item.image} alt={item.name} className="w-12 h-12 rounded-full object-cover border-2 border-rose-500/30" />
+                <div>
+                  <h4 className="font-bold text-white">{item.name}</h4>
+                  <span className="text-sm text-gray-400">{item.age}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
