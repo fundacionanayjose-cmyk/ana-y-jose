@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Gallery = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Variables para controlar el gesto táctil (Swipe)
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
-  // LISTA DE IMÁGENES (Asegúrate de tenerlas en public/galeria/)
+  // LISTA DE IMÁGENES REALES (Basada en tus archivos)
   const images = [
-    { src: '/galeria/foto1.jpg', caption: 'Alegría en cada baile' },
-    { src: '/galeria/foto2.jpg', caption: 'Talleres de pintura' },
-    { src: '/galeria/foto3.jpg', caption: 'Nuestros eventos' },
-    { src: '/galeria/foto4.jpg', caption: 'Cuidado y salud' },
-    { src: '/galeria/foto5.jpg', caption: 'Comedor comunitario' },
+    { src: '/galeria/20211120_111629_HDR.jpg', caption: 'Momentos que iluminan vidas' },
+    { src: '/galeria/20210503_205438.jpg', caption: 'Compartiendo sonrisas' },
+    { src: '/galeria/20210909_160146.jpg', caption: 'Talleres y actividades' },
+    { src: '/galeria/20211224_163500_HDR.jpg', caption: 'Celebrando la Navidad en familia' },
+    { src: '/galeria/IMG20250805144021 (1).jpg', caption: 'Nuestra comunidad unida' },
+    { src: '/galeria/20211121_132212_HDR.jpg', caption: 'Cuidado y bienestar' },
   ];
 
-  // Lógica del Autoplay (Cambia cada 4 segundos)
+  // Autoplay
   useEffect(() => {
     const timer = setInterval(() => {
       nextSlide();
-    }, 4000); // 4000ms = 4 segundos
-
-    // Limpiamos el timer si el componente se desmonta o cambia el índice manual
+    }, 5000);
     return () => clearInterval(timer);
   }, [currentIndex]);
 
@@ -31,6 +34,34 @@ const Gallery = () => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
+  // --- LÓGICA DE SWIPE (TÁCTIL) ---
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50; // Mínimo píxeles para considerar swipe
+
+    if (distance > minSwipeDistance) {
+      // Deslizó a la izquierda -> Siguiente
+      nextSlide();
+    } else if (distance < -minSwipeDistance) {
+      // Deslizó a la derecha -> Anterior
+      prevSlide();
+    }
+    
+    // Reset
+    touchStartX.current = 0;
+    touchEndX.current = 0;
+  };
+
   return (
     <section className="py-20 bg-stone-900 text-white relative overflow-hidden">
       <div className="container mx-auto px-6">
@@ -40,56 +71,69 @@ const Gallery = () => {
         </div>
 
         {/* --- VISOR DEL CARRUSEL --- */}
-        <div className="relative max-w-5xl mx-auto h-[400px] md:h-[600px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10 group">
+        <div 
+          className="relative max-w-5xl mx-auto h-[300px] md:h-[600px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10 group touch-pan-y"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           
-          {/* Imagen de Fondo (La actual) */}
-          <div 
-            className="w-full h-full bg-cover bg-center transition-all duration-700 ease-in-out transform hover:scale-105"
-            style={{ backgroundImage: `url(${images[currentIndex].src})` }}
-            // Fallback: Si no encuentra la imagen local, usa una de ejemplo de Unsplash
-            onError={(e) => e.target.style.backgroundImage = "url('https://images.unsplash.com/photo-1516307365426-bea591f05011?q=80&w=1000')"}
-          >
-            {/* Gradiente Oscuro Inferior para que el texto se lea bien */}
-            <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center pb-8">
-              <h3 className="text-2xl font-bold tracking-wide drop-shadow-lg">
-                {images[currentIndex].caption}
-              </h3>
-            </div>
+          {/* IMAGEN OPTIMIZADA */}
+          <div className="w-full h-full relative bg-gray-800">
+             <img 
+               src={images[currentIndex].src} 
+               alt={images[currentIndex].caption}
+               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+               loading="lazy"
+               onError={(e) => {
+                 e.target.onerror = null; 
+                 e.target.src = "https://images.unsplash.com/photo-1516307365426-bea591f05011?q=80&w=1000"; // Fallback elegante
+               }}
+             />
+             
+             {/* Gradiente para texto */}
+             <div className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-end justify-center pb-8 pointer-events-none">
+               <h3 className="text-xl md:text-2xl font-bold tracking-wide drop-shadow-lg text-center px-4">
+                 {images[currentIndex].caption}
+               </h3>
+             </div>
           </div>
 
           {/* --- CONTROLES (Flechas) --- */}
-          {/* Botón Izquierda */}
+          {/* Ocultos en móvil para no tapar la foto, ya que ahora tenemos SWIPE */}
           <button 
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white text-white hover:text-gray-900 p-3 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 z-10"
-            aria-label="Imagen anterior"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white text-white hover:text-gray-900 p-3 rounded-full backdrop-blur-md transition-all hidden md:block opacity-0 group-hover:opacity-100"
+            aria-label="Anterior"
           >
             <ChevronLeft size={32} />
           </button>
           
-          {/* Botón Derecha */}
           <button 
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white text-white hover:text-gray-900 p-3 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 z-10"
-            aria-label="Siguiente imagen"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white text-white hover:text-gray-900 p-3 rounded-full backdrop-blur-md transition-all hidden md:block opacity-0 group-hover:opacity-100"
+            aria-label="Siguiente"
           >
             <ChevronRight size={32} />
           </button>
 
-          {/* --- INDICADORES (Puntitos) --- */}
+          {/* --- INDICADORES --- */}
           <div className="absolute top-4 right-4 flex gap-2 z-10">
             {images.map((_, idx) => (
               <div 
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
-                className={`h-2 rounded-full cursor-pointer transition-all duration-300 shadow-sm ${
+                className={`h-1.5 rounded-full cursor-pointer transition-all duration-300 shadow-sm ${
                   idx === currentIndex ? 'bg-rose-500 w-8' : 'bg-white/50 w-2 hover:bg-white'
                 }`}
               />
             ))}
           </div>
-
         </div>
+        
+        <p className="text-center text-gray-500 text-sm mt-4 md:hidden">
+          (Desliza para ver más fotos)
+        </p>
       </div>
     </section>
   );
