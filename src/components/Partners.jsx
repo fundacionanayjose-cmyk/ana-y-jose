@@ -1,13 +1,28 @@
 import React from 'react';
 
 const Partners = () => {
-  // Lista de Patrocinadores (Puedes agregar más)
+  // Lista de Patrocinadores con las IMÁGENES REALES de tu carpeta galeria
   const partners = [
-    { name: "Alcaldía de Bogotá", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Escudo_de_Bogot%C3%A1.svg/1200px-Escudo_de_Bogot%C3%A1.svg.png" },
-    { name: "Banco de Alimentos", logo: "https://www.bancodealimentos.org.co/wp-content/uploads/2020/06/Logo-Banco-de-Alimentos-Bogota-1.png" },
-    { name: "Éxito", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Almacenes_%C3%89xito_logo.svg/2560px-Almacenes_%C3%89xito_logo.svg.png" },
-    { name: "Cámara de Comercio", logo: "https://www.ccb.org.co/sites/default/files/2023-04/Logo%20CCB%20%281%29.png" },
-    { name: "Wompi", logo: "https://images.ctfassets.net/5hl5xgwd51r7/271168/22b3112b322524d77a06752763261765/wompi_logo.png" }
+    { 
+      name: "Alcaldía de Bogotá", 
+      logo: "/galeria/Protekto-Logo-Alcaldia-de-Bogota.jpg" 
+    },
+    { 
+      name: "Banco de Alimentos", 
+      logo: "/galeria/logobancodealimentos.png" 
+    },
+    { 
+      name: "Éxito", 
+      logo: "/galeria/logoexito.png" 
+    },
+    { 
+      name: "Cámara de Comercio", 
+      logo: "/galeria/camaradecomercio.png" 
+    },
+    { 
+      name: "Wompi", 
+      logo: "/galeria/wompi.png" 
+    }
   ];
 
   // Duplicamos la lista para crear el efecto infinito sin cortes
@@ -24,26 +39,30 @@ const Partners = () => {
         {/* Pista de deslizamiento */}
         <div className="flex animate-marquee whitespace-nowrap gap-16 items-center">
           {loopPartners.map((partner, index) => (
-            <div key={index} className="flex flex-col items-center justify-center w-32 md:w-48 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+            <div key={index} className="flex flex-col items-center justify-center w-32 md:w-48 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">
               <img 
                 src={partner.logo} 
                 alt={partner.name} 
                 className="h-16 md:h-20 object-contain"
+                loading="lazy"
+                onError={(e) => {
+                  e.target.style.display = 'none'; // Oculta si falla
+                  console.error(`Error cargando logo: ${partner.logo}`);
+                }}
               />
-              <span className="text-xs text-gray-400 mt-2 font-semibold">{partner.name}</span>
             </div>
           ))}
         </div>
       </div>
       
-      {/* Estilos Inline para la animación (para no tocar tailwind.config) */}
+      {/* Estilos Inline para la animación */}
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: marquee 30s linear infinite;
+          animation: marquee 40s linear infinite;
         }
         .animate-marquee:hover {
           animation-play-state: paused;

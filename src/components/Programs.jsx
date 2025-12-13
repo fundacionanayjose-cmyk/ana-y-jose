@@ -1,38 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; 
-import { ArrowRight, Clock, Heart, HandHeart, Smile } from 'lucide-react';
-
-// Integramos los datos directamente aquí para evitar errores de importación
-const programsData = [
-  {
-    id: 'nutricion',
-    title: "Nutrición con Amor",
-    shortDesc: "Garantizamos seguridad alimentaria con menús balanceados diseñados por expertos.",
-    icon: Clock,
-    color: "#e11d48", // Rose-600
-  },
-  {
-    id: 'salud',
-    title: "Salud Integral",
-    shortDesc: "Jornadas médicas, fisioterapia y acompañamiento psicológico continuo.",
-    icon: Heart,
-    color: "#1e40af", // Blue-800
-  },
-  {
-    id: 'vivienda',
-    title: "Vivienda Digna",
-    shortDesc: "Mejoramiento de espacios habitacionales para asegurar un entorno seguro.",
-    icon: HandHeart,
-    color: "#ca8a04", // Yellow-600
-  },
-  {
-    id: 'recreacion',
-    title: "Recreación y Vida",
-    shortDesc: "Arte, danza, paseos y talleres para mantener la alegría y la agilidad mental.",
-    icon: Smile,
-    color: "#16a34a", // Green-600
-  }
-];
+import { ArrowRight } from 'lucide-react';
+// Importamos los datos desde el archivo separado
+import { programsData } from '../data/programs';
 
 const Programs = () => {
   return (
@@ -51,8 +21,6 @@ const Programs = () => {
               <Link 
                 key={prog.id} 
                 to={`/proyecto/${prog.id}`} 
-                target="_blank" 
-                rel="noopener noreferrer" 
                 className="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border-b-4 border-transparent hover:-translate-y-2 flex flex-col h-full cursor-pointer" 
                 style={{ borderColor: prog.color }}
               >
@@ -84,4 +52,5 @@ const Programs = () => {
   );
 };
 
+// ESTA LÍNEA ES CRÍTICA: La exportación por defecto
 export default Programs;

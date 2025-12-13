@@ -3,16 +3,16 @@ import { ChevronDown, Heart } from 'lucide-react';
 import Button from './Button';
 
 const Hero = () => {
-  // IMÁGENES: Usamos nombres simples para evitar errores de carga en celulares
+  // CAMBIO: Rutas actualizadas a imágenes reales de tu carpeta public/galeria
   const heroImages = [
-    "/galeria/hero_1.jpg", 
-    "/galeria/hero_2.jpg", 
-    "/galeria/comunidad_unida.jpg",
+    "/galeria/20211120_111629_HDR.jpg", // Comunidad bajo el árbol
+    "/galeria/20211224_163500_HDR.jpg", // Evento Navidad
+    "/galeria/20210503_205438.jpg",     // Equipo de cocina/voluntarios
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Lógica del Carrusel (Autoplay) - Se mantiene igual
+  // Lógica del Carrusel (Autoplay)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => 
@@ -22,7 +22,6 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // NUEVA FUNCIÓN: Scroll suave a la sección de Donaciones
   const scrollToDonation = () => {
     const donationSection = document.getElementById('donar');
     if (donationSection) {
@@ -30,7 +29,6 @@ const Hero = () => {
     }
   };
 
-  // Función para ir a "Nosotros"
   const scrollToAbout = () => {
     const aboutSection = document.getElementById('nosotros');
     if (aboutSection) {
@@ -53,7 +51,7 @@ const Hero = () => {
             }`}
           />
         ))}
-        {/* Overlay oscuro para leer el texto */}
+        {/* Overlay oscuro */}
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-black/40"></div>
       </div>
 
@@ -69,7 +67,7 @@ const Hero = () => {
         <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-2xl max-w-5xl mx-auto">
           Nuestra misión es <br/>
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-rose-500">
-            Recuperando Sonrisas Perdidas
+            Recuperar Sonrisas Perdidas
           </span>
         </h1>
 
@@ -79,8 +77,6 @@ const Hero = () => {
         
         {/* BOTONES */}
         <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-          
-          {/* BOTÓN MEJORADO: Ahora lleva al formulario */}
           <Button 
             variant="accent" 
             onClick={scrollToDonation} 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Target, Lightbulb, Users, Utensils, Calendar } from 'lucide-react';
 
-// Sub-componente Contador Inteligente
+// Sub-componente Contador Inteligente (Sin cambios en lógica)
 const SmartCounter = ({ end, label, icon: Icon }) => {
   const [count, setCount] = useState(0);
   const elementRef = useRef(null);
@@ -52,15 +52,16 @@ const About = () => {
     <section id="nosotros" className="py-20 container mx-auto px-6 bg-stone-50">
       <div className="grid md:grid-cols-2 gap-16 items-start">
         
-        {/* IMAGEN DE FUNDADORES */}
+        {/* IMAGEN DE FUNDADORES / ADMINISTRACIÓN */}
         <div className="relative group sticky top-24">
           <div className="absolute -top-4 -left-4 w-24 h-24 bg-yellow-400 rounded-full opacity-20 blur-xl group-hover:scale-150 transition-all duration-700"></div>
           <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-600 rounded-full opacity-20 blur-xl group-hover:scale-150 transition-all duration-700"></div>
           
+          {/* CAMBIO: Ruta a imagen real en public/galeria */}
           <img 
-            src="/galeria/fundadores.jpg" 
-            alt="Fundadores Ana y José" 
-            className="rounded-3xl shadow-2xl relative z-10 w-full transform rotate-2 group-hover:rotate-0 transition-all duration-500 object-cover min-h-[500px]"
+            src="/galeria/20210527_091046.jpg" 
+            alt="Administración Fundación Ana y José" 
+            className="rounded-3xl shadow-2xl relative z-10 w-full transform rotate-2 group-hover:rotate-0 transition-all duration-500 object-cover min-h-[400px]"
           />
           
           <div className="absolute bottom-10 -left-6 bg-white p-6 rounded-2xl shadow-xl z-20 max-w-xs border-l-4 border-rose-600 hidden md:block animate-fade-in-up">
@@ -101,7 +102,7 @@ const About = () => {
             </div>
           </div>
           
-          {/* CONTADORES (RESTAURADOS) */}
+          {/* CONTADORES */}
           <div className="grid grid-cols-3 gap-3 border-t border-gray-200 pt-8">
             <SmartCounter end={15} label="Años sirviendo" icon={Calendar} />
             <SmartCounter end={120} label="Abuelos felices" icon={Users} />
