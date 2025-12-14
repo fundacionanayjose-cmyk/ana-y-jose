@@ -3,16 +3,14 @@ import { ChevronDown, Heart } from 'lucide-react';
 import Button from './Button';
 
 const Hero = () => {
-  // CAMBIO: Rutas actualizadas a imágenes reales de tu carpeta public/galeria
   const heroImages = [
-    "/galeria/20211120_111629_HDR.jpg", // Comunidad bajo el árbol
-    "/galeria/20211224_163500_HDR.jpg", // Evento Navidad
-    "/galeria/20210503_205438.jpg",     // Equipo de cocina/voluntarios
+    "/galeria/20211120_111629_HDR.jpg", 
+    "/galeria/20211224_163500_HDR.jpg", 
+    "/galeria/20210503_205438.jpg",     
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Lógica del Carrusel (Autoplay)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => 
@@ -51,8 +49,10 @@ const Hero = () => {
             }`}
           />
         ))}
-        {/* Overlay oscuro */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-black/40"></div>
+        
+        {/* --- CORRECCIÓN DE ILUMINACIÓN --- */}
+        {/* Antes era muy oscuro (60% a 40%). Ahora es más transparente arriba y en el centro */}
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-black/30 to-black/10"></div>
       </div>
 
       {/* CONTENIDO */}
@@ -64,14 +64,15 @@ const Hero = () => {
           </span>
         </div>
         
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-2xl max-w-5xl mx-auto">
+        {/* Añadimos drop-shadow extra al texto para garantizar lectura sobre fondo más claro */}
+        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] max-w-5xl mx-auto">
           Recuperando <br/>
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-rose-500">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-rose-500 drop-shadow-sm">
              Sonrisas Perdidas
           </span>
         </h1>
 
-        <p className="text-xl text-gray-100 mb-10 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-md">
+        <p className="text-xl text-white mb-10 max-w-2xl mx-auto font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
           En la <strong>Fundación Ana y José</strong>, convertimos la soledad en compañía, el hambre en alimento y el olvido en esperanza.
         </p>
         
@@ -88,7 +89,7 @@ const Hero = () => {
           <Button 
             variant="outline" 
             onClick={scrollToAbout}
-            className="group backdrop-blur-sm bg-white/5 hover:bg-white/20 border-white/30 text-white py-4 px-8" 
+            className="group backdrop-blur-sm bg-black/20 hover:bg-black/40 border-white/50 text-white py-4 px-8" 
           >
             Conocer más <ChevronDown className="group-hover:translate-y-1 transition-transform ml-1 inline-block" size={18}/>
           </Button>

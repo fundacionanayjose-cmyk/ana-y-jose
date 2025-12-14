@@ -3,15 +3,15 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { Heart } from 'lucide-react';
 
 // --- OPTIMIZACIÓN DE RENDIMIENTO (LAZY LOADING) ---
-// Importamos los componentes solo cuando el usuario los necesita.
-// Esto reduce drásticamente el peso inicial de la página.
+// Importamos los componentes solo cuando se necesitan para que la web cargue rápido.
 const Home = lazy(() => import('./components/Home'));
 const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
+const Terms = lazy(() => import('./components/Terms'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
 // --- COMPONENTE DE CARGA (FEEDBACK VISUAL) ---
-// Se muestra mientras se descargan los "chunks" de código en segundo plano.
+// Se muestra mientras se descargan las secciones nuevas
 const LoadingScreen = () => (
   <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 transition-opacity duration-500">
     <div className="relative">
@@ -25,7 +25,7 @@ const LoadingScreen = () => (
 );
 
 // --- UTILIDAD DE UX ---
-// Asegura que al navegar, la vista siempre empiece desde arriba.
+// Asegura que al navegar, la vista siempre empiece desde arriba de la página
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -39,20 +39,21 @@ const App = () => {
     <Router>
       <ScrollToTop />
       
-      {/* Suspense atrapa la carga de los componentes Lazy y muestra el LoadingScreen */}
+      {/* Suspense maneja la espera de los componentes Lazy */}
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
-          {/* Ruta Principal */}
+          {/* Ruta Principal (Home) */}
           <Route path="/" element={<Home />} />
           
           {/* Rutas Dinámicas de Proyectos (ej: /proyecto/nutricion) */}
           <Route path="/proyecto/:id" element={<ProjectDetail />} />
           
-          {/* Ruta Legal */}
+          {/* Rutas Legales */}
           <Route path="/politica-privacidad" element={<PrivacyPolicy />} />
+          <Route path="/terminos-condiciones" element={<Terms />} />
           
           {/* RUTA DE CAPTURA DE ERRORES (404) */}
-          {/* El "*" atrapa cualquier ruta que no coincida con las anteriores */}
+          {/* El "*" atrapa cualquier ruta que no exista */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

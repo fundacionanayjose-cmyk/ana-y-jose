@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import About from './About';
+import History from './History'; // <--- NUEVA IMPORTACIÓN
 import Team from './Team';
 import Programs from './Programs';
 import ImpactMap from './ImpactMap';
@@ -14,7 +15,7 @@ import Transparency from './Transparency';
 import Donation from './Donation';
 import Footer from './Footer';
 import Modal from './Modal';
-import ParallaxBanner from './ParallaxBanner'; // <--- IMPORTAR EL NUEVO COMPONENTE
+import ParallaxBanner from './ParallaxBanner';
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -52,8 +53,10 @@ const Home = () => {
       
       <About />
 
+      {/* --- SECCIÓN NUEVA: NUESTRA HISTORIA --- */}
+      <History /> 
+
       {/* --- TRANSICIÓN 1: COMUNIDAD --- */}
-      {/* Conecta la historia de la fundación con la realidad del campo */}
       <ParallaxBanner 
         image="/galeria/20211120_111629_HDR.jpg" 
         quote="Donde hay amor, no existe la soledad. Juntos somos una gran familia."
@@ -66,7 +69,6 @@ const Home = () => {
       <ImpactMap />
 
       {/* --- TRANSICIÓN 2: SERVICIO --- */}
-      {/* Muestra la acción (cocina/servicio) después de ver el mapa de impacto */}
       <ParallaxBanner 
         image="/galeria/20210503_205438.jpg" 
         quote="Manos que dan, nunca estarán vacías. Cada plato servido es una esperanza renovada."
@@ -79,7 +81,6 @@ const Home = () => {
       <Partners />
       
       {/* --- TRANSICIÓN 3: ESCUCHA Y CUIDADO --- */}
-      {/* Prepara emocionalmente al usuario para la sección de Transparencia y Donación */}
       <ParallaxBanner 
         image="/galeria/20211121_132212_HDR.jpg" 
         quote="Escuchar a nuestros abuelos es aprender de la historia y honrar nuestro futuro."

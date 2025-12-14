@@ -72,7 +72,7 @@ const About = () => {
         {/* TEXTO + MISIÓN/VISIÓN + CONTADORES */}
         <div>
           <span className="text-rose-600 font-bold uppercase tracking-wider text-sm mb-2 block">Nuestra Esencia</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">El Legado de <br/> Ana y José</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">El Legado de <br/> La Fundacion Ana y José</h2>
           
           <div className="space-y-4 text-lg text-gray-600 leading-relaxed text-justify mb-8">
             <p>

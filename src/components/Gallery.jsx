@@ -8,7 +8,7 @@ const Gallery = () => {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  // LISTA DE IMÁGENES REALES (Basada en tus archivos)
+  // LISTA DE IMÁGENES REALES
   const images = [
     { src: '/galeria/20211120_111629_HDR.jpg', caption: 'Momentos que iluminan vidas' },
     { src: '/galeria/20210503_205438.jpg', caption: 'Compartiendo sonrisas' },
@@ -85,6 +85,12 @@ const Gallery = () => {
                alt={images[currentIndex].caption}
                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                loading="lazy"
+               // --- PROTECCIÓN CONTRA CLIC DERECHO ---
+               onContextMenu={(e) => {
+                 e.preventDefault();
+                 return false;
+               }}
+               // --------------------------------------
                onError={(e) => {
                  e.target.onerror = null; 
                  e.target.src = "https://images.unsplash.com/photo-1516307365426-bea591f05011?q=80&w=1000"; // Fallback elegante
