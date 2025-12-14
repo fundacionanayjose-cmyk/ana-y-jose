@@ -11,7 +11,9 @@ const Navbar = ({ scrolled, logoUrl }) => {
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const navLinks = ['Inicio', 'Nosotros', 'Programas', 'Donar'];
+  // CAMBIO: Se eliminó 'Donar' de esta lista para evitar el texto duplicado.
+  // El botón "Donar Amor" se mantiene más abajo.
+  const navLinks = ['Inicio', 'Nosotros', 'Programas'];
 
   return (
     <nav className={`fixed w-full z-40 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md py-2' : 'bg-transparent py-4'}`}>
@@ -19,7 +21,6 @@ const Navbar = ({ scrolled, logoUrl }) => {
         
         {/* Identidad de Marca */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo(0,0)}>
-          {/* Aquí irá tu logo. Si no carga, muestra el texto */}
           <img src={logoUrl} alt="Logo Ana y José" className="h-12 w-auto object-contain drop-shadow-md" />
           <span className={`text-xl font-bold tracking-tight hidden md:block ${scrolled ? 'text-gray-800' : 'text-white drop-shadow-md'}`}>
             Fundación Ana y José
@@ -37,6 +38,7 @@ const Navbar = ({ scrolled, logoUrl }) => {
               {item}
             </button>
           ))}
+          {/* Este es el botón colorido que queríamos conservar */}
           <Button variant={scrolled ? 'primary' : 'accent'} className="py-2 px-4 text-sm" onClick={() => scrollToSection('donar')}>
             <Heart className="w-4 h-4 fill-current" /> Donar Amor
           </Button>
@@ -55,6 +57,7 @@ const Navbar = ({ scrolled, logoUrl }) => {
             {item}
           </button>
         ))}
+        {/* Botón destacado en móvil */}
         <Button variant="primary" onClick={() => scrollToSection('donar')}>Donar Ahora</Button>
       </div>
     </nav>

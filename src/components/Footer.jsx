@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // IMPORTANTE: Agregar esto
 import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, Heart, MessageCircle } from 'lucide-react';
 
-// Icono de TikTok personalizado (ya que no viene en todas las versiones de lucide)
 const TikTokIcon = ({ className }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
     <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/>
@@ -18,7 +18,6 @@ const Footer = ({ logoUrl }) => {
           {/* --- COLUMNA 1: IDENTIDAD --- */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              {/* Filtro blanco para que el logo resalte en fondo oscuro */}
               <img 
                 src={logoUrl} 
                 alt="Logo Fundación Ana y José" 
@@ -67,37 +66,32 @@ const Footer = ({ logoUrl }) => {
             </ul>
           </div>
 
-          {/* --- COLUMNA 3: REDES SOCIALES (ACTUALIZADO) --- */}
+          {/* --- COLUMNA 3: REDES SOCIALES --- */}
           <div>
             <h4 className="text-white font-bold text-lg mb-6">Síguenos</h4>
             <p className="text-sm text-gray-400 mb-6">Únete a nuestra comunidad digital y mira el impacto diario.</p>
             
             <div className="flex flex-wrap gap-3">
-              {/* Facebook */}
               <a href="https://www.facebook.com/fundacionanayjose/" target="_blank" rel="noopener noreferrer" 
                  className="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
               
-              {/* Instagram */}
               <a href="https://www.instagram.com/fundacion_anayjose/" target="_blank" rel="noopener noreferrer" 
                  className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform" aria-label="Instagram">
                 <Instagram className="w-5 h-5" />
               </a>
               
-              {/* TikTok */}
               <a href="https://www.tiktok.com/tag/fundacionanayjose" target="_blank" rel="noopener noreferrer" 
                  className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform border border-gray-700" aria-label="TikTok">
                 <TikTokIcon className="w-5 h-5" />
               </a>
 
-              {/* YouTube */}
               <a href="https://www.youtube.com/@fundacionanayjose1264" target="_blank" rel="noopener noreferrer" 
                  className="w-10 h-10 rounded-full bg-[#FF0000] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform" aria-label="YouTube">
                 <Youtube className="w-5 h-5" />
               </a>
 
-              {/* WhatsApp */}
               <a href="https://wa.me/573145520393" target="_blank" rel="noopener noreferrer" 
                  className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform" aria-label="WhatsApp">
                 <MessageCircle className="w-5 h-5" />
@@ -105,11 +99,10 @@ const Footer = ({ logoUrl }) => {
             </div>
           </div>
 
-          {/* --- COLUMNA 4: MAPA (UBICACIÓN) --- */}
+          {/* --- COLUMNA 4: MAPA --- */}
           <div className="lg:col-span-1">
             <h4 className="text-white font-bold text-lg mb-6">Nuestra Sede</h4>
             <div className="w-full h-48 rounded-2xl overflow-hidden shadow-lg border border-gray-700 hover:border-rose-500 transition-colors duration-300 relative group">
-              {/* Overlay interactivo */}
               <a 
                 href="https://maps.app.goo.gl/MNpZHZf6d8sFGiZc6" 
                 target="_blank" 
@@ -121,7 +114,6 @@ const Footer = ({ logoUrl }) => {
                 </span>
               </a>
 
-              {/* Mapa Estático / Iframe */}
               <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.837376375054!2d-74.13735192417726!3d4.623067742316277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9c0634676571%3A0x6d62325c345377f!2sCl.%208%20%2373-11%2C%20Kennedy%2C%20Bogot%C3%A1!5e0!3m2!1ses!2sco!4v1710360000000!5m2!1ses!2sco" 
                 width="100%" 
@@ -147,12 +139,17 @@ const Footer = ({ logoUrl }) => {
 
         </div>
 
-        {/* --- COPYRIGHT --- */}
+        {/* --- COPYRIGHT Y LEGAL --- */}
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Fundación Ana y José. Todos los derechos reservados.</p>
-          <p className="mt-2 md:mt-0 flex items-center gap-1">
-            Hecho con <Heart className="w-3 h-3 text-red-600 fill-current animate-pulse" /> para nuestros abuelos
-          </p>
+          <p>© {new Date().getFullYear()} Fundación Ana y José. Todos los derechos reservados.</p>
+          
+          <div className="flex gap-4 mt-4 md:mt-0 items-center">
+             <Link to="/politica-privacidad" className="hover:text-rose-500 transition-colors">Política de Datos</Link>
+             <span className="hidden md:inline">|</span>
+             <p className="flex items-center gap-1">
+                Hecho con <Heart className="w-3 h-3 text-red-600 fill-current animate-pulse" /> para nuestros abuelos
+             </p>
+          </div>
         </div>
       </div>
     </footer>

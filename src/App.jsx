@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-// We import the pages
+// Importamos las páginas
 import Home from './components/Home';
 import ProjectDetail from './components/ProjectDetail';
+import PrivacyPolicy from './components/PrivacyPolicy'; // IMPORTAR NUEVO COMPONENTE
 
-// Auxiliary component to ensure the view scrolls to top when changing page
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -17,15 +17,12 @@ const ScrollToTop = () => {
 const App = () => {
   return (
     <Router>
-      {/* Activate automatic scroll */}
       <ScrollToTop />
-      
       <Routes>
-        {/* Main Route: Landing Page */}
         <Route path="/" element={<Home />} />
-        
-        {/* Dynamic Route: Project Detail */}
         <Route path="/proyecto/:id" element={<ProjectDetail />} />
+        {/* Nueva Ruta Legal */}
+        <Route path="/politica-privacidad" element={<PrivacyPolicy />} />
       </Routes>
     </Router>
   );
