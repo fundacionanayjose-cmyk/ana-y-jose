@@ -7,12 +7,18 @@ import {
 import Button from './Button';
 import { supabase } from '../supabaseClient'; 
 
+// 1. MEJORA UX: Opciones con impacto emocional para conectar con el donante
+const DONATION_OPTIONS = [
+  { value: '50000', label: '$50.000', impact: '5 Almuerzos calientes' },
+  { value: '100000', label: '$100.000', impact: 'Atención médica básica' },
+  { value: '200000', label: '$200.000', impact: 'Mercado mensual completo' },
+];
+
 const Donation = () => {
   const [donationType, setDonationType] = useState('money'); 
   const [amount, setAmount] = useState('50000');
   const [customAmount, setCustomAmount] = useState('');
   
-  // NUEVO: Estado del Checkbox
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const [donorData, setDonorData] = useState({ 
@@ -72,7 +78,12 @@ const Donation = () => {
       const script = document.createElement('script');
       script.src = 'https://checkout.wompi.co/widget.js';
       script.setAttribute('data-render', 'button');
-      script.setAttribute('data-public-key', 'pub_test_Q5yDA9N9W3uW3a0a1a2b3c4d5e6f7g8h'); 
+      
+      // 2. SEGURIDAD: Usamos variable de entorno para la llave pública
+      // Si no existe la variable, usa la de pruebas como fallback seguro
+      const wompiKey = import.meta.env.VITE_WOMPI_PUBLIC_KEY || 'pub_test_Q5yDA9N9W3uW3a0a1a2b3c4d5e6f7g8h';
+      script.setAttribute('data-public-key', wompiKey); 
+      
       script.setAttribute('data-currency', 'COP');
       script.setAttribute('data-amount-in-cents', amountInCents);
       script.setAttribute('data-reference', `DON-${Date.now()}-${donorData.id}`);
@@ -117,19 +128,22 @@ const Donation = () => {
     
     doc.text('¡Gracias por ayudar a nuestros abuelos!', 105, 200, { align: 'center' });
 
-    doc.save(`Certificado_${donorData.name}.pdf`);
+    // 3. TRANSPARENCIA: Aclaración legal
+    doc.setFontSize(8);
+    doc.text('* Este documento es simbólico y de agradecimiento inmediato.', 105, 260, { align: 'center' });
+    doc.text('El certificado fiscal oficial será enviado una vez validado el ingreso bancario.', 105, 265, { align: 'center' });
+
+    doc.save(`Certificado_Simbólico_${donorData.name}.pdf`);
   };
 
   const handleNext = async (e) => {
     e.preventDefault();
     
-    // VALIDACIÓN CHECKBOX
     if (!acceptedTerms) {
         alert("Debes aceptar la Política de Privacidad para continuar.");
         return;
     }
     
-    // Validación Campos
     let isValid = false;
     if (donationType === 'money') {
         if (donorData.name && donorData.id && donorData.email && donorData.phone && (amount || customAmount)) isValid = true;
@@ -215,14 +229,49 @@ const Donation = () => {
                                 <input type="number" required className="w-full p-2.5 border rounded-lg" value={donorData.id} onChange={(e) => setDonorData({...donorData, id: e.target.value})} />
                             </div>
                         </div>
-                        <div className="space-y-2 pt-2">
-                           <label className="text-sm font-bold text-gray-700">Monto (COP)</label>
-                           <div className="grid grid-cols-3 gap-2">
-                             {['50000', '100000', '200000'].map((val) => (
-                               <button type="button" key={val} className={`py-2 px-3 rounded-lg text-sm font-bold border ${amount === val && !customAmount ? 'bg-rose-600 text-white' : 'text-gray-600'}`} onClick={() => { setAmount(val); setCustomAmount(''); }}>${parseInt(val).toLocaleString()}</button>
+                        
+                        {/* 4. SELECCIÓN DE IMPACTO (Refactorizada) */}
+                        <div className="space-y-3 pt-2">
+                           <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                             <Heart size={16} className="text-rose-600" /> Selecciona tu impacto:
+                           </label>
+                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                             {DONATION_OPTIONS.map((opt) => (
+                               <button 
+                                 type="button" 
+                                 key={opt.value} 
+                                 className={`
+                                   relative p-3 rounded-xl border-2 transition-all text-left group
+                                   ${amount === opt.value && !customAmount 
+                                     ? 'border-rose-600 bg-rose-50 text-rose-700' 
+                                     : 'border-gray-200 hover:border-rose-300 text-gray-600'}
+                                 `} 
+                                 onClick={() => { setAmount(opt.value); setCustomAmount(''); }}
+                               >
+                                 <div className="font-extrabold text-lg">{opt.label}</div>
+                                 <div className="text-xs font-medium opacity-80">{opt.impact}</div>
+                                 
+                                 {/* Icono de Check activo */}
+                                 {amount === opt.value && !customAmount && (
+                                   <div className="absolute top-2 right-2 text-rose-600">
+                                     <CheckCircle size={16} />
+                                   </div>
+                                 )}
+                               </button>
                              ))}
                            </div>
-                           <input type="number" className="w-full p-3 border rounded-lg" placeholder="Otro valor..." value={customAmount} onChange={(e) => setCustomAmount(e.target.value)} />
+                           
+                           {/* Campo de valor personalizado */}
+                           <div className="relative mt-2">
+                              <span className="absolute left-4 top-3.5 text-gray-500 font-bold">$</span>
+                              <input 
+                                type="number" 
+                                className={`w-full pl-8 p-3 border-2 rounded-xl outline-none transition-colors font-bold text-gray-700 ${customAmount ? 'border-rose-600 bg-rose-50' : 'border-gray-200 focus:border-rose-400'}`} 
+                                placeholder="Otro valor (COP)" 
+                                value={customAmount} 
+                                onChange={(e) => setCustomAmount(e.target.value)} 
+                              />
+                           </div>
                         </div>
                     </>
                 )}
@@ -234,7 +283,6 @@ const Donation = () => {
                     </div>
                 )}
 
-                {/* --- CHECKBOX DE TÉRMINOS (NUEVO) --- */}
                 <div className="flex items-start gap-3 mt-4 p-3 bg-gray-50 rounded-xl border border-gray-200">
                   <div className="flex items-center h-5">
                     <input
@@ -300,7 +348,7 @@ const Donation = () => {
                 
                 {donationType === 'money' && (
                     <button onClick={generateCertificate} className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl shadow-xl flex items-center justify-center gap-3 hover:bg-gray-800">
-                      <Download className="w-6 h-6" /> Descargar Certificado PDF
+                      <Download className="w-6 h-6" /> Descargar Certificado Simbólico
                     </button>
                 )}
                 

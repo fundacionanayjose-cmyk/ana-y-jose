@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://fundacionanayjose.org/sitemap.xml
+
+# Bloquear acceso a archivos de sistema o privados si existieran en el futuro
+Disallow: /private/
+Disallow: /admin/
