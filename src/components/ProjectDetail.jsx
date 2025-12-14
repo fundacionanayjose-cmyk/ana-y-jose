@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Heart, CheckCircle } from 'lucide-react';
-import { Helmet } from 'react-helmet-async'; // Importamos Helmet
+import { ArrowLeft, Heart, CheckCircle, MessageCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { programsData } from '../data/programs'; 
 import Button from './Button';
 
@@ -13,18 +13,16 @@ const ProjectDetail = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (!project) return <div className="text-center py-20">Proyecto no encontrado</div>;
+  if (!project) return <div className="text-center py-20 text-xl font-bold">Proyecto no encontrado</div>;
 
   const Icon = project.icon;
 
   return (
     <div className="bg-stone-50 min-h-screen">
       
-      {/* --- SEO DINÁMICO --- */}
       <Helmet>
         <title>{project.title} | Fundación Ana y José</title>
         <meta name="description" content={project.shortDesc} />
-        {/* Open Graph */}
         <meta property="og:title" content={`${project.title} - ¡Apóyanos!`} />
         <meta property="og:description" content={project.longDesc.substring(0, 150) + "..."} />
         <meta property="og:image" content={`https://fundacionanayjose.org${project.heroImage}`} />
@@ -32,7 +30,7 @@ const ProjectDetail = () => {
 
       {/* Navbar Simplificado */}
       <nav className="absolute top-0 w-full z-50 p-6 flex justify-between items-center text-white">
-        <Link to="/" className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full hover:bg-black/50 transition-all">
+        <Link to="/" className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full hover:bg-black/50 transition-all font-bold">
           <ArrowLeft size={20} /> Volver al Inicio
         </Link>
       </nav>
@@ -65,7 +63,7 @@ const ProjectDetail = () => {
           
           <div className="lg:col-span-2 bg-white p-8 md:p-12 rounded-3xl shadow-xl">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Sobre el Proyecto</h2>
-            <p className="text-lg text-gray-600 leading-relaxed mb-8">
+            <p className="text-lg text-gray-600 leading-relaxed mb-8 text-justify">
               {project.longDesc}
             </p>
 
@@ -87,7 +85,7 @@ const ProjectDetail = () => {
                   key={idx} 
                   src={img} 
                   alt={`Galería ${idx}`} 
-                  className="rounded-xl w-full h-48 object-cover hover:scale-105 transition-transform duration-500 cursor-pointer"
+                  className="rounded-xl w-full h-48 object-cover hover:scale-105 transition-transform duration-500 cursor-pointer shadow-md"
                   onError={(e) => e.target.src = "https://images.unsplash.com/photo-1516307365426-bea591f05011?q=80&w=500"}
                 />
               ))}
@@ -95,7 +93,7 @@ const ProjectDetail = () => {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="bg-white p-8 rounded-3xl shadow-xl border-t-8 sticky top-8" style={{ borderColor: project.color }}>
+            <div className="bg-white p-8 rounded-3xl shadow-xl border-t-8 sticky top-24" style={{ borderColor: project.color }}>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Apoya esta causa</h3>
               <p className="text-gray-500 mb-6 text-sm">Tu aporte va dirigido 100% a este programa específico.</p>
               
@@ -105,13 +103,21 @@ const ProjectDetail = () => {
                 <li className="flex items-center gap-3 text-gray-600"><CheckCircle size={20} className="text-green-500" /> Reporte de impacto</li>
               </ul>
 
-              <Button variant="primary" className="w-full justify-center mb-4" style={{ backgroundColor: project.color }}>
-                <Heart className="w-4 h-4 mr-2 fill-white" /> Donar a este Proyecto
-              </Button>
-              
-              <Link to="/" className="block text-center text-gray-400 hover:text-gray-600 text-sm font-medium">
-                ¿Tienes dudas? Contáctanos
+              {/* ENLACE FUNCIONAL A LA SECCIÓN DE DONACIÓN */}
+              <Link to="/#donar" className="block w-full">
+                <Button variant="primary" className="w-full justify-center mb-4 text-white" style={{ backgroundColor: project.color }}>
+                  <Heart className="w-4 h-4 mr-2 fill-white" /> Donar Ahora
+                </Button>
               </Link>
+              
+              <a 
+                href="https://wa.me/573145520393" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center justify-center gap-2 text-center text-gray-400 hover:text-gray-600 text-sm font-medium hover:underline"
+              >
+                <MessageCircle size={16} /> ¿Tienes dudas? Contáctanos
+              </a>
             </div>
           </div>
 
