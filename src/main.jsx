@@ -5,17 +5,17 @@ import ReactGA from 'react-ga4'
 import App from './App.jsx'
 import './index.css'
 
-// CONFIGURACIÓN DE ANALÍTICA (Paso 10 del Checklist)
-// Reemplaza 'G-XXXXXXXXXX' con tu ID real de medición de GA4.
-// Puedes obtenerlo gratis en analytics.google.com
-const GA_MEASUREMENT_ID = "G-TU_ID_REAL_AQUI"; 
+// Configuración de Analytics segura para producción
+const GA_ID = import.meta.env.VITE_GA_ID;
 
-if (GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== "G-TU_ID_REAL_AQUI") {
-  ReactGA.initialize(GA_MEASUREMENT_ID);
-  // Enviar pageview inicial
+if (GA_ID) {
+  ReactGA.initialize(GA_ID);
   ReactGA.send({ hitType: "pageview", page: window.location.pathname });
 } else {
-  console.log("Analytics no iniciado (Modo Desarrollo o falta ID)");
+  // En desarrollo no ensuciamos los datos
+  if (import.meta.env.MODE === 'development') {
+    console.log("Analytics inactivo (Modo Desarrollo)");
+  }
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(

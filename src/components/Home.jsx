@@ -6,6 +6,7 @@ import Hero from './Hero';
 import About from './About';
 import Team from './Team';
 import Programs from './Programs';
+import ImpactMap from './ImpactMap'; // <--- NUEVA IMPORTACIÓN DEL MAPA
 import Gallery from './Gallery';
 import Testimonials from './Testimonials';
 import Partners from './Partners';
@@ -57,15 +58,27 @@ const Home = () => {
       <Hero onPrimaryAction={openModal} />
       
       <About />
+      
       <Team />
+      
       <Programs />
+      
+      {/* --- SECCIÓN NUEVA: MAPA INTERACTIVO --- */}
+      <ImpactMap />
+      
       <Gallery />
+      
       <Testimonials />
+      
       <Partners />
+      
       <Transparency />
+      
       <Donation />
+      
       <Footer logoUrl={logoUrl} />
     </div>
   );
 };
+
 export default Home;
