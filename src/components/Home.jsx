@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Phone } from 'lucide-react';
-import { Helmet } from 'react-helmet-async'; // Importamos Helmet para SEO
+import { Helmet } from 'react-helmet-async';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import About from './About';
 import Team from './Team';
 import Programs from './Programs';
-import ImpactMap from './ImpactMap'; // <--- NUEVA IMPORTACIÓN DEL MAPA
+import ImpactMap from './ImpactMap';
 import Gallery from './Gallery';
 import Testimonials from './Testimonials';
 import Partners from './Partners';
@@ -14,6 +14,7 @@ import Transparency from './Transparency';
 import Donation from './Donation';
 import Footer from './Footer';
 import Modal from './Modal';
+import ParallaxBanner from './ParallaxBanner'; // <--- IMPORTAR EL NUEVO COMPONENTE
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -31,23 +32,15 @@ const Home = () => {
 
   return (
     <div className="font-sans text-gray-800 bg-stone-50 overflow-x-hidden relative">
-      {/* --- SECCIÓN SEO PROFESIONAL --- */}
       <Helmet>
         <title>Fundación Ana y José | Apoyo al Adulto Mayor en Bogotá</title>
         <meta name="description" content="Fundación sin ánimo de lucro dedicada al cuidado, alimentación y bienestar del adulto mayor vulnerable en Bogotá. ¡Dona o sé voluntario!" />
-        <meta name="keywords" content="fundación, adulto mayor, abuelos, donaciones, bogotá, voluntariado, caridad, ayuda social" />
-        
-        {/* Open Graph (Cómo se ve en Facebook/WhatsApp) */}
         <meta property="og:title" content="Fundación Ana y José | Recuperando Sonrisas" />
-        <meta property="og:description" content="Ayudamos a abuelos en situación de abandono. Tu ayuda transforma vidas." />
         <meta property="og:image" content="https://fundacionanayjose.org/galeria/20211120_111629_HDR.jpg" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://fundacionanayjose.org/" />
       </Helmet>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       
-      {/* Botón flotante de WhatsApp */}
       <a href="https://wa.me/573145520393" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-transform hover:scale-110 flex items-center gap-2 group animate-bounce-slow">
         <Phone className="w-6 h-6 fill-current" />
         <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap font-bold">¡Hablemos!</span>
@@ -58,13 +51,26 @@ const Home = () => {
       <Hero onPrimaryAction={openModal} />
       
       <About />
+
+      {/* --- TRANSICIÓN 1: COMUNIDAD --- */}
+      {/* Conecta la historia de la fundación con la realidad del campo */}
+      <ParallaxBanner 
+        image="/galeria/20211120_111629_HDR.jpg" 
+        quote="Donde hay amor, no existe la soledad. Juntos somos una gran familia."
+      />
       
       <Team />
       
       <Programs />
       
-      {/* --- SECCIÓN NUEVA: MAPA INTERACTIVO --- */}
       <ImpactMap />
+
+      {/* --- TRANSICIÓN 2: SERVICIO --- */}
+      {/* Muestra la acción (cocina/servicio) después de ver el mapa de impacto */}
+      <ParallaxBanner 
+        image="/galeria/20210503_205438.jpg" 
+        quote="Manos que dan, nunca estarán vacías. Cada plato servido es una esperanza renovada."
+      />
       
       <Gallery />
       
@@ -72,6 +78,13 @@ const Home = () => {
       
       <Partners />
       
+      {/* --- TRANSICIÓN 3: ESCUCHA Y CUIDADO --- */}
+      {/* Prepara emocionalmente al usuario para la sección de Transparencia y Donación */}
+      <ParallaxBanner 
+        image="/galeria/20211121_132212_HDR.jpg" 
+        quote="Escuchar a nuestros abuelos es aprender de la historia y honrar nuestro futuro."
+      />
+
       <Transparency />
       
       <Donation />
