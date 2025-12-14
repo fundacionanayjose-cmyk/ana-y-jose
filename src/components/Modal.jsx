@@ -1,159 +1,195 @@
-import React, { useState } from 'react';
-import { X, Send, CheckCircle, Briefcase, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Send, CheckCircle, Briefcase, AlertCircle, User, Phone, Mail, MessageSquare } from 'lucide-react';
 import Button from './Button';
-import { supabase } from '../supabaseClient'; 
+
+// Eliminamos la importación de Supabase que rompía la página
+// import { supabase } from '../supabaseClient'; 
 
 const Modal = ({ isOpen, onClose }) => {
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-  
   const [formData, setFormData] = useState({
     nombre: '',
-    contacto: '',
-    tipoAyuda: 'Quiero ser Padrino (Mensual)',
-    profesion: ''
+    email: '',
+    telefono: '',
+    mensaje: ''
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  // ⚠️ TU URL DE GOOGLE APPS SCRIPT
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGfdW5Zw7Qx2aLfji0t5HihPg2RSTNt2X1-vc7HjZw-BGmUlthgCQbx76L2u-by1Ltkw/exec";
+
+  // Efecto para bloquear el scroll del fondo cuando el modal está abierto
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setErrorMsg('');
+    setIsSubmitting(true);
 
-    // Validaciones
-    if (!formData.nombre.trim() || !formData.contacto.trim()) {
-        setErrorMsg('Por favor completa el nombre y contacto.');
-        setIsLoading(false);
-        return;
-    }
-
-    if (!acceptedTerms) {
-      setErrorMsg('Debes aceptar la política de privacidad para continuar.');
-      setIsLoading(false);
-      return;
-    }
+    // Preparamos los datos para Google Sheets
+    // Usamos 'formType: contacto' para que puedas filtrarlo si quieres en el futuro
+    // (Por ahora irá a la pestaña "Voluntarios" por defecto en tu script, lo cual está bien)
+    const dataToSend = {
+      ...formData,
+      formType: 'voluntario' // O 'contacto_general' si prefieres
+    };
 
     try {
-      const { error } = await supabase
-        .from('contactos')
-        .insert([
-          { 
-            nombre: formData.nombre.trim(),
-            telefono: formData.contacto.trim(),
-            tipo_ayuda: formData.tipoAyuda,
-            profesion: formData.profesion.trim(),
-            created_at: new Date().toISOString()
-          },
-        ]);
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataToSend)
+      });
 
-      if (error) throw error;
-      setIsSuccess(true);
-      
+      // Éxito
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        setFormData({ nombre: '', email: '', telefono: '', mensaje: '' });
+        onClose();
+      }, 3000);
+
     } catch (error) {
-      console.error('Error enviando datos:', error);
-      setErrorMsg('Error de conexión. Intenta contactarnos por WhatsApp.');
+      console.error("Error al enviar:", error);
+      alert("Hubo un problema de conexión. Por favor escríbenos al WhatsApp.");
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handleClose = () => {
-    setIsSuccess(false);
-    setErrorMsg('');
-    setAcceptedTerms(false);
-    setFormData({ nombre: '', contacto: '', tipoAyuda: 'Quiero ser Padrino (Mensual)', profesion: '' });
-    onClose();
-  }
-
-  const isVolunteer = formData.tipoAyuda === "Ser Voluntario";
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity" onClick={handleClose}>
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 flex flex-col max-h-[90vh] animate-fade-in-up" onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      {/* Overlay Oscuro */}
+      <div 
+        className="absolute inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity" 
+        onClick={onClose}
+      ></div>
+
+      {/* Contenido del Modal */}
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-fade-in-up">
         
-        <div className="bg-rose-600 p-6 flex justify-between items-center text-white shrink-0 rounded-t-3xl">
-          <h3 className="text-2xl font-bold">
-            {isSuccess ? '¡Mensaje Recibido!' : (isVolunteer ? 'Únete al Equipo' : 'Únete a la Familia')}
-          </h3>
-          <button onClick={handleClose} className="hover:bg-white/20 p-2 rounded-full transition-colors" aria-label="Cerrar modal">
-            <X className="w-6 h-6" />
-          </button>
+        {/* Botón Cerrar */}
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors z-10"
+        >
+          <X size={24} />
+        </button>
+
+        {/* Encabezado */}
+        <div className="bg-blue-900 p-8 text-center text-white">
+          <Briefcase className="w-12 h-12 mx-auto mb-3 text-yellow-500" />
+          <h3 className="text-2xl font-bold">Contáctanos / Voluntariado</h3>
+          <p className="text-blue-200 text-sm mt-1">
+            Déjanos tus datos y nos pondremos en contacto contigo pronto.
+          </p>
         </div>
 
-        <div className="p-8 overflow-y-auto">
-          {isSuccess ? (
-            <div className="text-center py-6">
-              <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="w-10 h-10" />
+        {/* Cuerpo del Formulario */}
+        <div className="p-8">
+          {showSuccess ? (
+            <div className="text-center py-8 animate-fade-in">
+              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle size={32} />
               </div>
-              <h4 className="text-2xl font-bold text-gray-800 mb-2">¡Datos Guardados!</h4>
-              <p className="text-gray-600 mb-6">Tu información está segura. Te contactaremos pronto.</p>
-              <Button variant="primary" onClick={handleClose} className="w-full">Cerrar</Button>
+              <h4 className="text-xl font-bold text-gray-800 mb-2">¡Mensaje Enviado!</h4>
+              <p className="text-gray-500">Gracias por querer ser parte del cambio.</p>
             </div>
           ) : (
-            <>
-              <p className="text-gray-600 mb-6">
-                {isVolunteer 
-                  ? "Tu tiempo y talento son el regalo más valioso para nuestros abuelos."
-                  : "Déjanos tus datos y te contaremos cómo puedes transformar una vida hoy."}
-              </p>
+            <form onSubmit={handleSubmit} className="space-y-4">
               
-              {errorMsg && (
-                <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm flex items-center gap-2" role="alert">
-                  <AlertCircle size={16} /> {errorMsg}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-700 uppercase">Nombre Completo</label>
+                <div className="relative">
+                  <User className="absolute left-3 top-3 text-gray-400 w-4 h-4" />
+                  <input 
+                    type="text" 
+                    name="nombre"
+                    required
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    className="w-full pl-9 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition-all"
+                    placeholder="Tu nombre"
+                  />
                 </div>
-              )}
-              
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">¿Cómo quieres ayudar?</label>
-                  <select name="tipoAyuda" value={formData.tipoAyuda} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-rose-500 outline-none bg-white font-medium text-gray-700">
-                    <option value="Quiero ser Padrino (Mensual)">Quiero ser Padrino (Mensual)</option>
-                    <option value="Donación Única">Donación Única</option>
-                    <option value="Ser Voluntario">Ser Voluntario (Tiempo/Talento)</option>
-                    <option value="Donar Especie">Donar Especie (Ropa/Comida)</option>
-                  </select>
-                </div>
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
-                  <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-rose-500 outline-none" placeholder="Ej: Juan Pérez" />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono / WhatsApp</label>
-                  <input type="tel" name="contacto" value={formData.contacto} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-rose-500 outline-none" placeholder="Ej: 300 123 4567" />
-                </div>
-
-                {isVolunteer && (
-                  <div className="bg-rose-50 p-4 rounded-xl border border-rose-100">
-                    <label className="block text-sm font-bold text-rose-800 mb-1 flex items-center gap-2">
-                      <Briefcase className="w-4 h-4" /> ¿Cuál es tu profesión o talento?
-                    </label>
-                    <input type="text" name="profesion" value={formData.profesion} onChange={handleChange} className="w-full px-4 py-2 rounded-lg border border-rose-200 focus:ring-2 focus:ring-rose-500 outline-none text-sm" placeholder="Ej: Soy Odontólogo, Músico, Contador..." />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-700 uppercase">Teléfono</label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-3 text-gray-400 w-4 h-4" />
+                    <input 
+                      type="tel" 
+                      name="telefono"
+                      required
+                      value={formData.telefono}
+                      onChange={handleChange}
+                      className="w-full pl-9 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                      placeholder="300 123..."
+                    />
                   </div>
-                )}
-
-                <div className="flex items-start gap-3 mt-4 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                  <input id="terms-modal" type="checkbox" checked={acceptedTerms} onChange={(e) => setAcceptedTerms(e.target.checked)} className="w-5 h-5 mt-0.5 text-rose-600 rounded cursor-pointer" />
-                  <label htmlFor="terms-modal" className="text-xs text-gray-600 cursor-pointer">
-                    He leído y acepto la <a href="/politica-privacidad" target="_blank" className="text-rose-600 font-bold hover:underline">Política de Privacidad</a> y autorizo el tratamiento de mis datos.
-                  </label>
                 </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-700 uppercase">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 text-gray-400 w-4 h-4" />
+                    <input 
+                      type="email" 
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full pl-9 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                      placeholder="correo@..."
+                    />
+                  </div>
+                </div>
+              </div>
 
-                <Button variant="primary" className="w-full mt-2 shadow-xl shadow-rose-200" disabled={isLoading}>
-                  {isLoading ? 'Enviando...' : 'Enviar Solicitud'} <Send className="w-4 h-4 ml-2" />
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-700 uppercase">Mensaje</label>
+                <div className="relative">
+                  <MessageSquare className="absolute left-3 top-3 text-gray-400 w-4 h-4" />
+                  <textarea 
+                    name="mensaje"
+                    rows="3"
+                    value={formData.mensaje}
+                    onChange={handleChange}
+                    className="w-full pl-9 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none transition-all resize-none"
+                    placeholder="¿En qué te gustaría colaborar?"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <Button 
+                  variant="primary" 
+                  className="w-full py-3 shadow-lg flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Enviando...' : <><Send size={18} /> Enviar Mensaje</>}
                 </Button>
-              </form>
-            </>
+              </div>
+
+              <p className="text-xs text-center text-gray-400 mt-4">
+                Tus datos están seguros con la Fundación Ana y José.
+              </p>
+            </form>
           )}
         </div>
       </div>
