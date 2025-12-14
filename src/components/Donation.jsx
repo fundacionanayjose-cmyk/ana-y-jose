@@ -4,7 +4,6 @@ import {
   User, AlertTriangle, Phone, Mail, Package, Heart, Globe 
 } from 'lucide-react';
 import Button from './Button';
-import { supabase } from '../supabaseClient';
 import { generateCertificate } from '../utils/pdfGenerator';
 
 const DONATION_OPTIONS = [
@@ -28,10 +27,18 @@ const Donation = () => {
     email: '', 
     phone: '', 
     itemDescription: '', 
-    pickupAddress: ''    
+    pickupAddress: ''     
   });
   
   const wompiRef = useRef(null);
+
+  // ⚠️ TU URL DE GOOGLE SCRIPT (Asegúrate que sea la correcta)
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGfdW5Zw7Qx2aLfji0t5HihPg2RSTNt2X1-vc7HjZw-BGmUlthgCQbx76L2u-by1Ltkw/exec";
+
+  // ⚠️ LLAVE DE PRUEBA DE WOMPI (Para que aparezca el botón)
+  // Cuando tengas tu cuenta real, reemplaza esto por tu llave de producción.
+  // Si usas .env, cámbialo por: import.meta.env.VITE_WOMPI_PUBLIC_KEY
+  const WOMPI_PUBLIC_KEY = "pub_test_Q5yDA9xoKdePzhSGeVe9HAez7CTS0223"; 
 
   const validateForm = () => {
     const newErrors = {};
@@ -53,30 +60,36 @@ const Donation = () => {
 
   const saveToDatabase = async () => {
     setIsSaving(true);
+    console.log("Intentando guardar en Google Sheets...");
+
     try {
       const finalAmount = customAmount || amount;
-      const descripcion = donationType === 'money' 
-        ? `Donación Económica: $${finalAmount}` 
+      const descripcionDetallada = donationType === 'money' 
+        ? `Donación Económica: $${finalAmount} COP. ID: ${donorData.id}` 
         : `Especie: ${donorData.itemDescription}`;
 
-      const { error } = await supabase
-        .from('contactos')
-        .insert([{
-          nombre: donorData.name,
-          telefono: donorData.phone,
-          email: donorData.email,
-          tipo_ayuda: 'Donante', 
-          monto: donationType === 'money' ? finalAmount : null,
-          mensaje: descripcion,
-          direccion: donorData.pickupAddress,
-          created_at: new Date().toISOString()
-        }]);
+      const dataToSend = {
+        formType: 'donante', // CLAVE: Esto le dice al script que vaya a la hoja "Donantes"
+        nombre: donorData.name,
+        contacto: `${donorData.phone} | ${donorData.email}`,
+        tipoDonacion: donationType === 'money' ? 'Dinero' : 'Especie',
+        mensaje: descripcionDetallada
+      };
 
-      if (error) throw error;
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", // Esto es necesario para Google Scripts
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataToSend)
+      });
+
+      console.log("Datos enviados al script (no-cors mode)");
       return true;
+
     } catch (err) {
       console.error("Error guardando donante:", err);
-      return false;
+      // Permitimos continuar aunque falle el guardado para no perder la donación
+      return true; 
     } finally {
       setIsSaving(false);
     }
@@ -90,35 +103,38 @@ const Donation = () => {
     }
   };
 
+  // --- LÓGICA DE WOMPI CORREGIDA ---
   useEffect(() => {
+    // Solo ejecutamos si estamos en el paso 2, es dinero y existe la referencia del div
     if (step === 2 && donationType === 'money' && wompiRef.current) {
+      
+      // Limpiamos el contenedor por si acaso
       wompiRef.current.innerHTML = ''; 
+      
       const finalAmount = customAmount || amount;
-      if (!finalAmount || parseInt(finalAmount) < 1500) return;
+      
+      // Validación básica de monto
+      if (!finalAmount || parseInt(finalAmount) < 1500) {
+          wompiRef.current.innerHTML = '<p class="text-red-500 text-sm">El monto mínimo es $1.500</p>';
+          return;
+      }
+
+      console.log("Cargando Widget de Wompi...");
 
       const script = document.createElement('script');
       script.src = 'https://checkout.wompi.co/widget.js';
       script.setAttribute('data-render', 'button');
-      
-      const wompiKey = import.meta.env.VITE_WOMPI_PUBLIC_KEY;
-      if (!wompiKey) {
-        console.error("Falta configuración de Wompi");
-        wompiRef.current.innerHTML = '<p class="text-red-500 text-sm">Error de configuración de pagos.</p>';
-        return;
-      }
-      
-      script.setAttribute('data-public-key', wompiKey);
+      script.setAttribute('data-public-key', WOMPI_PUBLIC_KEY); // Usamos la variable directa
       script.setAttribute('data-currency', 'COP');
-      script.setAttribute('data-amount-in-cents', finalAmount + '00');
+      script.setAttribute('data-amount-in-cents', finalAmount + '00'); // Convertir a centavos
       script.setAttribute('data-reference', `DON-${Date.now()}-${donorData.id}`);
       script.setAttribute('data-redirect-url', window.location.href); 
       
       wompiRef.current.appendChild(script);
     }
-  }, [step, amount, customAmount, donorData.id, donationType]);
+  }, [step, amount, customAmount, donorData.id, donationType]); // Dependencias del efecto
 
   const handleDownloadCertificate = async () => {
-    // Ahora esta función es asíncrona porque la librería se carga al vuelo
     await generateCertificate(donorData.name, donorData.id, customAmount || amount, donationType);
   };
 
@@ -165,7 +181,6 @@ const Donation = () => {
                     {donationType === 'money' ? 'Aporte Económico' : 'Donar Artículos'}
                 </h3>
                 
-                {/* MEJORA ACCESIBILIDAD: text-sm y text-gray-700 para mejor lectura */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="text-sm font-bold text-gray-700 uppercase">Nombre *</label>
@@ -250,24 +265,21 @@ const Donation = () => {
                             <h3 className="text-2xl font-bold text-gray-800">Método de Pago</h3>
                             <p className="text-gray-500 text-sm">Donación: <span className="font-bold text-rose-600">${parseInt(customAmount || amount).toLocaleString()} COP</span></p>
                         </div>
+                        
+                        {/* CONTENEDOR WOMPI */}
                         <div className="bg-white border rounded-xl p-4 text-center shadow-sm">
-                            <p className="font-bold text-gray-700 mb-2 text-sm">Tarjetas / PSE / Nequi</p>
-                            <div className="min-h-[50px] flex items-center justify-center"><form ref={wompiRef}></form></div>
+                            <p className="font-bold text-gray-700 mb-2 text-sm">Tarjetas / PSE / Nequi / Bancolombia</p>
+                            <div className="min-h-[50px] flex items-center justify-center">
+                                {/* AQUÍ SE INYECTA EL BOTÓN WOMPI */}
+                                <form ref={wompiRef}></form>
+                            </div>
                         </div>
+
                         <a href="https://www.paypal.com" target="_blank" rel="noopener noreferrer" className="block transform hover:scale-[1.02] transition-transform">
                             <div className="bg-[#003087] text-white rounded-xl p-4 text-center shadow-md flex items-center justify-center gap-2">
                                 <Globe size={18} /> Donar con PayPal
                             </div>
                         </a>
-                        
-                        {/* SEGURIDAD: Botón Demo SOLO visible en Desarrollo */}
-                        {import.meta.env.DEV && (
-                           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-center mt-4">
-                             <button onClick={() => setStep(3)} className="text-yellow-700 font-bold text-xs hover:underline w-full flex items-center justify-center gap-1">
-                               <AlertTriangle size={12}/> Simular Pago Exitoso (Solo Dev)
-                             </button>
-                           </div>
-                        )}
                     </>
                 ) : (
                     <div className="text-center py-6">

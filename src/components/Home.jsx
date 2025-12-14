@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Phone } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom'; // Importante para detectar el hash
+import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import About from './About';
 import History from './History';
 import Team from './Team';
 import Programs from './Programs';
+
+// 1. IMPORTAMOS EL NUEVO COMPONENTE AQUÍ
+import OfficialServices from './OfficialServices'; // <--- NUEVO: Asegúrate de que la ruta sea correcta
+
 import ImpactMap from './ImpactMap';
 import Gallery from './Gallery';
 import Testimonials from './Testimonials';
@@ -21,7 +25,7 @@ import ParallaxBanner from './ParallaxBanner';
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const location = useLocation(); // Hook para leer la URL
+  const location = useLocation();
   
   const logoUrl = "/galeria/LOGO.png";
 
@@ -45,7 +49,7 @@ const Home = () => {
             top: offsetPosition,
             behavior: "smooth"
           });
-        }, 100); // Pequeño delay para asegurar que el DOM esté listo
+        }, 100);
       }
     }
   }, [location]);
@@ -85,6 +89,10 @@ const Home = () => {
       <Team />
       
       <Programs />
+
+      {/* 2. INSERTAMOS EL NUEVO COMPONENTE AQUÍ */}
+      {/* Esta sección contiene la Info Oficial de los PDFs sin tocar Programs */}
+      <OfficialServices /> {/* <--- NUEVO: Aquí se mostrará la info de ruta de atención y servicios detallados */}
       
       <ImpactMap />
 

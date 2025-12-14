@@ -123,13 +123,14 @@ const Gallery = () => {
             <ChevronRight size={32} />
           </button>
 
-          {/* --- INDICADORES --- */}
+          {/* --- INDICADORES (MEJORA DE ACCESIBILIDAD) --- */}
           <div className="absolute top-4 right-4 flex gap-2 z-10">
             {images.map((_, idx) => (
-              <div 
+              <button 
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
-                className={`h-1.5 rounded-full cursor-pointer transition-all duration-300 shadow-sm ${
+                aria-label={`Ver imagen ${idx + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-500 ${
                   idx === currentIndex ? 'bg-rose-500 w-8' : 'bg-white/50 w-2 hover:bg-white'
                 }`}
               />
