@@ -1,6 +1,11 @@
-import { jsPDF } from 'jspdf';
+// Eliminamos el import estático superior para ahorrar peso inicial
+// import { jsPDF } from 'jspdf'; 
 
-export const generateCertificate = (donorName, donorId, amount, donationType) => {
+export const generateCertificate = async (donorName, donorId, amount, donationType) => {
+  // --- LAZY LOADING ---
+  // Importamos la librería SOLO cuando se ejecuta esta función
+  const { jsPDF } = await import('jspdf');
+
   // Sanitización básica de inputs para el PDF
   const safeName = donorName.replace(/[^\w\sñÑáéíóúÁÉÍÓÚüÜ]/g, '').toUpperCase();
   const safeId = donorId.replace(/[^\d]/g, '');

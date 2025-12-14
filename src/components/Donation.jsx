@@ -20,7 +20,7 @@ const Donation = () => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [step, setStep] = useState(1); 
   const [isSaving, setIsSaving] = useState(false);
-  const [errors, setErrors] = useState({}); // Nuevo estado para errores de validación
+  const [errors, setErrors] = useState({});
   
   const [donorData, setDonorData] = useState({ 
     name: '', 
@@ -33,7 +33,6 @@ const Donation = () => {
   
   const wompiRef = useRef(null);
 
-  // Validación robusta
   const validateForm = () => {
     const newErrors = {};
     if (!acceptedTerms) newErrors.terms = "Debes aceptar la política de privacidad.";
@@ -101,10 +100,9 @@ const Donation = () => {
       script.src = 'https://checkout.wompi.co/widget.js';
       script.setAttribute('data-render', 'button');
       
-      // SEGURIDAD: Solo usar variable de entorno. Si no existe, no carga (evita fraudes).
       const wompiKey = import.meta.env.VITE_WOMPI_PUBLIC_KEY;
       if (!wompiKey) {
-        console.error("Falta configuración de Wompi (VITE_WOMPI_PUBLIC_KEY)");
+        console.error("Falta configuración de Wompi");
         wompiRef.current.innerHTML = '<p class="text-red-500 text-sm">Error de configuración de pagos.</p>';
         return;
       }
@@ -119,8 +117,9 @@ const Donation = () => {
     }
   }, [step, amount, customAmount, donorData.id, donationType]);
 
-  const handleDownloadCertificate = () => {
-    generateCertificate(donorData.name, donorData.id, customAmount || amount, donationType);
+  const handleDownloadCertificate = async () => {
+    // Ahora esta función es asíncrona porque la librería se carga al vuelo
+    await generateCertificate(donorData.name, donorData.id, customAmount || amount, donationType);
   };
 
   const handleInKindCoordination = () => {
@@ -166,16 +165,17 @@ const Donation = () => {
                     {donationType === 'money' ? 'Aporte Económico' : 'Donar Artículos'}
                 </h3>
                 
+                {/* MEJORA ACCESIBILIDAD: text-sm y text-gray-700 para mejor lectura */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-gray-500 uppercase">Nombre *</label>
-                    <div className="relative"><User className="absolute left-3 top-3 text-gray-400 w-4 h-4"/><input type="text" className={`w-full pl-9 p-2.5 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none ${errors.name ? 'border-red-500' : ''}`} value={donorData.name} onChange={(e) => setDonorData({...donorData, name: e.target.value})} /></div>
-                    {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                    <label className="text-sm font-bold text-gray-700 uppercase">Nombre *</label>
+                    <div className="relative"><User className="absolute left-3 top-3 text-gray-400 w-4 h-4"/><input type="text" className={`w-full pl-9 p-2.5 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none ${errors.name ? 'border-red-500 bg-red-50' : ''}`} value={donorData.name} onChange={(e) => setDonorData({...donorData, name: e.target.value})} /></div>
+                    {errors.name && <p className="text-red-500 text-xs mt-1 font-bold">{errors.name}</p>}
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-gray-500 uppercase">Teléfono *</label>
-                    <div className="relative"><Phone className="absolute left-3 top-3 text-gray-400 w-4 h-4"/><input type="tel" className={`w-full pl-9 p-2.5 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none ${errors.phone ? 'border-red-500' : ''}`} value={donorData.phone} onChange={(e) => setDonorData({...donorData, phone: e.target.value})} /></div>
-                    {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                    <label className="text-sm font-bold text-gray-700 uppercase">Teléfono *</label>
+                    <div className="relative"><Phone className="absolute left-3 top-3 text-gray-400 w-4 h-4"/><input type="tel" className={`w-full pl-9 p-2.5 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none ${errors.phone ? 'border-red-500 bg-red-50' : ''}`} value={donorData.phone} onChange={(e) => setDonorData({...donorData, phone: e.target.value})} /></div>
+                    {errors.phone && <p className="text-red-500 text-xs mt-1 font-bold">{errors.phone}</p>}
                   </div>
                 </div>
 
@@ -183,14 +183,14 @@ const Donation = () => {
                     <>
                         <div className="grid md:grid-cols-2 gap-4">
                             <div className="space-y-1">
-                                <label className="text-xs font-bold text-gray-500 uppercase">Email *</label>
-                                <div className="relative"><Mail className="absolute left-3 top-3 text-gray-400 w-4 h-4"/><input type="email" className={`w-full pl-9 p-2.5 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none ${errors.email ? 'border-red-500' : ''}`} value={donorData.email} onChange={(e) => setDonorData({...donorData, email: e.target.value})} /></div>
-                                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                                <label className="text-sm font-bold text-gray-700 uppercase">Email *</label>
+                                <div className="relative"><Mail className="absolute left-3 top-3 text-gray-400 w-4 h-4"/><input type="email" className={`w-full pl-9 p-2.5 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none ${errors.email ? 'border-red-500 bg-red-50' : ''}`} value={donorData.email} onChange={(e) => setDonorData({...donorData, email: e.target.value})} /></div>
+                                {errors.email && <p className="text-red-500 text-xs mt-1 font-bold">{errors.email}</p>}
                             </div>
                             <div className="space-y-1">
-                                <label className="text-xs font-bold text-gray-500 uppercase">C.C./NIT *</label>
-                                <input type="number" className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none ${errors.id ? 'border-red-500' : ''}`} value={donorData.id} onChange={(e) => setDonorData({...donorData, id: e.target.value})} />
-                                {errors.id && <p className="text-red-500 text-xs mt-1">{errors.id}</p>}
+                                <label className="text-sm font-bold text-gray-700 uppercase">C.C./NIT *</label>
+                                <input type="number" className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none ${errors.id ? 'border-red-500 bg-red-50' : ''}`} value={donorData.id} onChange={(e) => setDonorData({...donorData, id: e.target.value})} />
+                                {errors.id && <p className="text-red-500 text-xs mt-1 font-bold">{errors.id}</p>}
                             </div>
                         </div>
                         
@@ -220,9 +220,9 @@ const Donation = () => {
 
                 {donationType === 'kind' && (
                     <div className="space-y-1">
-                        <label className="text-xs font-bold text-gray-500 uppercase">¿Qué deseas donar?</label>
-                        <textarea className={`w-full p-3 border rounded-lg h-24 resize-none focus:ring-2 focus:ring-rose-500 outline-none ${errors.itemDescription ? 'border-red-500' : ''}`} value={donorData.itemDescription} onChange={(e) => setDonorData({...donorData, itemDescription: e.target.value})}></textarea>
-                        {errors.itemDescription && <p className="text-red-500 text-xs mt-1">{errors.itemDescription}</p>}
+                        <label className="text-sm font-bold text-gray-700 uppercase">¿Qué deseas donar?</label>
+                        <textarea className={`w-full p-3 border rounded-lg h-24 resize-none focus:ring-2 focus:ring-rose-500 outline-none ${errors.itemDescription ? 'border-red-500 bg-red-50' : ''}`} value={donorData.itemDescription} onChange={(e) => setDonorData({...donorData, itemDescription: e.target.value})} placeholder="Ej: Ropa en buen estado, alimentos no perecederos..."></textarea>
+                        {errors.itemDescription && <p className="text-red-500 text-xs mt-1 font-bold">{errors.itemDescription}</p>}
                     </div>
                 )}
 
@@ -259,19 +259,24 @@ const Donation = () => {
                                 <Globe size={18} /> Donar con PayPal
                             </div>
                         </a>
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-center mt-4">
-                           <button onClick={() => setStep(3)} className="text-yellow-700 font-bold text-xs hover:underline w-full flex items-center justify-center gap-1">
-                             <AlertTriangle size={12}/> Simular Pago Exitoso (Demo)
-                           </button>
-                        </div>
+                        
+                        {/* SEGURIDAD: Botón Demo SOLO visible en Desarrollo */}
+                        {import.meta.env.DEV && (
+                           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-center mt-4">
+                             <button onClick={() => setStep(3)} className="text-yellow-700 font-bold text-xs hover:underline w-full flex items-center justify-center gap-1">
+                               <AlertTriangle size={12}/> Simular Pago Exitoso (Solo Dev)
+                             </button>
+                           </div>
+                        )}
                     </>
                 ) : (
                     <div className="text-center py-6">
                         <Heart className="w-16 h-16 text-rose-500 mx-auto mb-4 animate-pulse"/>
-                        <h3 className="text-2xl font-bold text-gray-800 mb-2">¡Gracias!</h3>
-                        <p className="text-gray-600 mb-6">Hemos registrado tu intención. Finalicemos la logística por WhatsApp.</p>
+                        <h3 className="text-2xl font-bold text-gray-800 mb-2">¡Gracias por tu intención!</h3>
+                        <p className="text-gray-600 mb-6 text-sm">Para coordinar la recogida o entrega de los artículos, por favor comunícate con nosotros vía WhatsApp. Allí te daremos la dirección exacta y horarios.</p>
+                        
                         <button onClick={handleInKindCoordination} className="w-full bg-[#25D366] text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2 hover:bg-[#128c7e] transition-colors">
-                            <Phone className="w-5 h-5" /> Abrir WhatsApp
+                            <Phone className="w-5 h-5" /> Abrir WhatsApp de Coordinación
                         </button>
                     </div>
                 )}
