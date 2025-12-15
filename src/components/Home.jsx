@@ -3,6 +3,13 @@ import { Phone } from 'lucide-react';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import About from './About';
+// 1. IMPORTAMOS LOS COMPONENTES PERDIDOS
+import History from './History'; 
+import ImpactMap from './ImpactMap';
+import ParallaxBanner from './ParallaxBanner';
+import OfficialServices from './OfficialServices';
+// (Fin de nuevos imports)
+
 import SponsorSection from './SponsorSection';
 import Team from './Team';
 import Programs from './Programs';
@@ -30,19 +37,17 @@ const Home = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Abrir formulario general
+  // ... (Funciones de modales igual que antes) ...
   const openGeneralForm = () => {
     setFormBeneficiaryName(null);
     setIsFormModalOpen(true);
   };
 
-  // Abrir detalle del abuelo (Tarjeta Grande)
   const openBeneficiaryDetail = (abuelo) => {
     setSelectedAbuelo(abuelo);
     setIsDetailModalOpen(true);
   };
 
-  // Pasar del Detalle al Formulario de Donación
   const handleSponsorFromDetail = (abuelo) => {
     setIsDetailModalOpen(false);
     setFormBeneficiaryName(abuelo.nombre);
@@ -52,14 +57,12 @@ const Home = () => {
   return (
     <div className="font-sans text-gray-800 bg-stone-50 overflow-x-hidden relative">
       
-      {/* 1. Modal de Formulario (Datos + Supabase) */}
       <Modal 
         isOpen={isFormModalOpen} 
         onClose={() => setIsFormModalOpen(false)} 
         preSelectedBeneficiary={formBeneficiaryName} 
       />
 
-      {/* 2. Modal de Historia (Visual + Emotivo) */}
       <BeneficiaryDetailModal 
         isOpen={isDetailModalOpen}
         onClose={() => setIsDetailModalOpen(false)}
@@ -71,13 +74,26 @@ const Home = () => {
       
       <Navbar scrolled={scrolled} logoUrl={logoUrl} onOpenModal={openGeneralForm} />
       <Hero onPrimaryAction={openGeneralForm} />
+      
       <About />
       
-      {/* 3. Sección de Tarjetas: Al hacer clic, abre el Detalle */}
+      {/* 2. AQUÍ AGREGAMOS LA HISTORIA DESPUÉS DE "NOSOTROS" */}
+      <History /> 
+
+      {/* 3. AQUÍ AGREGAMOS EL MAPA (IMPORTANTE) */}
+      <ImpactMap />
+
       <SponsorSection onOpenModal={openBeneficiaryDetail} />
       
+      {/* 4. UN BANNER VISUAL PARA ROMPER LA MONOTONÍA */}
+      <ParallaxBanner />
+
       <Team />
       <Programs />
+
+      {/* 5. SERVICIOS OFICIALES DESPUÉS DE PROGRAMAS */}
+      <OfficialServices />
+
       <Gallery />
       <Testimonials />
       <Partners />
