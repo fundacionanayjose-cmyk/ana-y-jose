@@ -1,49 +1,60 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; 
-import { ArrowRight } from 'lucide-react';
-// Importamos los datos desde el archivo separado
+import { ArrowRight, BookOpen, Palette, Users, Sun, Stethoscope, HandHeart } from 'lucide-react'; // Importamos iconos aquí
+import { Link } from 'react-router-dom';
 import { programsData } from '../data/programs';
+
+// Mapa de iconos
+const iconMap = {
+  BookOpen,
+  Palette,
+  Users,
+  Sun,
+  Stethoscope,
+  HandHeart
+};
 
 const Programs = () => {
   return (
-    <section id="programas" className="py-20 bg-white relative">
-      <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-stone-50 to-white"></div>
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Nuestros Pilares</h2>
-          <p className="text-xl text-gray-600">Abordamos la vejez de manera integral. Haz clic en cada uno para conocer el impacto en detalle.</p>
-        </div>
+    <section id="programas" className="py-20 bg-white">
+      {/* ... (Header igual) ... */}
+      <div className="container mx-auto px-6">
+        {/* ... (Títulos iguales) ... */}
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {programsData.map((program) => {
+            // Buscamos el icono correcto usando el nombre que guardamos
+            const IconComponent = iconMap[program.icon] || Sun; 
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {programsData.map((prog) => {
-            const Icon = prog.icon;
             return (
-              <Link 
-                key={prog.id} 
-                to={`/proyecto/${prog.id}`} 
-                className="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border-b-4 border-transparent hover:-translate-y-2 flex flex-col h-full cursor-pointer" 
-                style={{ borderColor: prog.color }}
-              >
-                {/* Icono */}
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:rotate-12`} style={{ backgroundColor: `${prog.color}20` }}>
-                  <Icon className="w-8 h-8" style={{ color: prog.color }} />
+              <div key={program.id} className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col">
+                <div 
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 duration-300"
+                  style={{ backgroundColor: `${program.color}20` }}
+                >
+                  <IconComponent size={28} style={{ color: program.color }} />
                 </div>
-                
-                {/* Título */}
-                <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-rose-600 transition-colors">
-                  {prog.title}
+
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-rose-600 transition-colors">
+                  {program.title}
                 </h3>
                 
-                {/* Descripción Corta */}
                 <p className="text-gray-600 leading-relaxed mb-6 flex-grow">
-                  {prog.shortDesc}
+                  {program.shortDesc}
                 </p>
+
+                <Link 
+                  to={`/proyecto/${program.id}`} 
+                  className="inline-flex items-center font-bold text-sm tracking-wide transition-all group-hover:translate-x-2"
+                  style={{ color: program.color }}
+                >
+                  CONOCER MÁS <ArrowRight size={16} className="ml-2" />
+                </Link>
                 
-                {/* Botón "Ver detalles" */}
-                <div className="flex items-center text-sm font-bold uppercase tracking-wider mt-auto group-hover:underline" style={{ color: prog.color }}>
-                  Ver detalles <ArrowRight size={16} className="ml-2 transform group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
+                <div 
+                  className="absolute bottom-0 left-0 w-0 h-1 transition-all duration-500 group-hover:w-full"
+                  style={{ backgroundColor: program.color }}
+                ></div>
+              </div>
             );
           })}
         </div>
@@ -52,5 +63,4 @@ const Programs = () => {
   );
 };
 
-// ESTA LÍNEA ES CRÍTICA: La exportación por defecto
 export default Programs;

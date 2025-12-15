@@ -2,16 +2,16 @@ import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 
-// --- OPTIMIZACIÓN DE RENDIMIENTO (LAZY LOADING) ---
-// Importamos los componentes solo cuando el usuario los necesita.
-// Esto reduce drásticamente el peso inicial de la página.
+// --- IMPORTACIÓN DINÁMICA (LAZY LOADING) ---
+// Optimización para que la página cargue rápido
 const Home = lazy(() => import('./components/Home'));
 const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
+const Terms = lazy(() => import('./components/Terms'));
+const AdminLayout = lazy(() => import('./components/AdminLayout')); // Panel Administrativo
 const NotFound = lazy(() => import('./components/NotFound'));
 
-// --- COMPONENTE DE CARGA (FEEDBACK VISUAL) ---
-// Se muestra mientras se descargan los "chunks" de código en segundo plano.
+// --- PANTALLA DE CARGA ---
 const LoadingScreen = () => (
   <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 transition-opacity duration-500">
     <div className="relative">
@@ -24,8 +24,7 @@ const LoadingScreen = () => (
   </div>
 );
 
-// --- UTILIDAD DE UX ---
-// Asegura que al navegar, la vista siempre empiece desde arriba.
+// --- UTILIDAD: SCROLL AL INICIO AL CAMBIAR DE RUTA ---
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -39,20 +38,20 @@ const App = () => {
     <Router>
       <ScrollToTop />
       
-      {/* Suspense atrapa la carga de los componentes Lazy y muestra el LoadingScreen */}
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
-          {/* Ruta Principal */}
+          {/* Rutas Públicas */}
           <Route path="/" element={<Home />} />
-          
-          {/* Rutas Dinámicas de Proyectos (ej: /proyecto/nutricion) */}
           <Route path="/proyecto/:id" element={<ProjectDetail />} />
           
-          {/* Ruta Legal */}
+          {/* Rutas Legales */}
           <Route path="/politica-privacidad" element={<PrivacyPolicy />} />
+          <Route path="/terminos-condiciones" element={<Terms />} />
           
-          {/* RUTA DE CAPTURA DE ERRORES (404) */}
-          {/* El "*" atrapa cualquier ruta que no coincida con las anteriores */}
+          {/* Ruta Privada (Admin) */}
+          <Route path="/admin" element={<AdminLayout />} />
+          
+          {/* Error 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

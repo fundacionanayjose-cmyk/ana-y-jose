@@ -1,123 +1,141 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Heart, CheckCircle, MessageCircle } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
-import { programsData } from '../data/programs'; 
+import { ArrowLeft, Heart, CheckCircle, BookOpen, Palette, Users, Sun, Stethoscope, HandHeart } from 'lucide-react'; // Importamos iconos
+import { programsData } from '../data/programs';
 import Button from './Button';
+import Modal from './Modal';
+
+// Mapa de iconos
+const iconMap = {
+  BookOpen,
+  Palette,
+  Users,
+  Sun,
+  Stethoscope,
+  HandHeart
+};
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const project = programsData.find(p => p.id === id);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (!project) return <div className="text-center py-20 text-xl font-bold">Proyecto no encontrado</div>;
+  if (!project) return <div className="text-center py-20">Proyecto no encontrado</div>;
 
-  const Icon = project.icon;
+  // Recuperamos el icono
+  const IconComponent = iconMap[project.icon] || Sun;
 
   return (
-    <div className="bg-stone-50 min-h-screen">
-      
-      <Helmet>
-        <title>{project.title} | Fundación Ana y José</title>
-        <meta name="description" content={project.shortDesc} />
-        <meta property="og:title" content={`${project.title} - ¡Apóyanos!`} />
-        <meta property="og:description" content={project.longDesc.substring(0, 150) + "..."} />
-        <meta property="og:image" content={`https://fundacionanayjose.org${project.heroImage}`} />
-      </Helmet>
+    <div className="bg-stone-50 min-h-screen relative">
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        preSelectedBeneficiary={`Proyecto: ${project.title}`} 
+      />
 
-      {/* Navbar Simplificado */}
-      <nav className="absolute top-0 w-full z-50 p-6 flex justify-between items-center text-white">
-        <Link to="/" className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full hover:bg-black/50 transition-all font-bold">
+      {/* ... (Navbar igual) ... */}
+      <nav className="absolute top-0 w-full z-20 p-6 flex justify-between items-center text-white">
+        <Link to="/" className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full hover:bg-black/40 transition-all border border-white/10">
           <ArrowLeft size={20} /> Volver al Inicio
         </Link>
       </nav>
 
-      {/* Hero */}
       <header className="relative h-[60vh] min-h-[400px]">
-        <img 
-          src={project.heroImage} 
-          alt={project.title} 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/40 to-transparent"></div>
-        
+        <img src={project.heroImage} alt={project.title} className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-50 via-stone-900/40 to-transparent"></div>
         <div className="absolute bottom-0 left-0 w-full p-6 md:p-12">
-          <div className="container mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white mb-4 border border-white/20">
-              <Icon size={20} style={{ color: project.color }} />
-              <span className="font-bold uppercase tracking-wide text-sm">Programa Oficial</span>
+          <div className="container mx-auto animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-md text-gray-900 mb-4 shadow-lg">
+              <IconComponent size={20} style={{ color: project.color }} />
+              <span className="font-bold uppercase tracking-wide text-xs">Estrategia CIAMAJ</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-xl">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 drop-shadow-lg shadow-black">
               {project.title}
             </h1>
           </div>
         </div>
       </header>
 
-      {/* Contenido */}
-      <div className="container mx-auto px-6 py-16 -mt-10 relative z-10">
+      {/* ... (Resto del contenido igual que antes) ... */}
+      <div className="container mx-auto px-6 py-12 relative z-10">
         <div className="grid lg:grid-cols-3 gap-12">
           
-          <div className="lg:col-span-2 bg-white p-8 md:p-12 rounded-3xl shadow-xl">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Sobre el Proyecto</h2>
-            <p className="text-lg text-gray-600 leading-relaxed mb-8 text-justify">
+          <div className="lg:col-span-2 bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <span className="w-2 h-8 rounded-full" style={{ backgroundColor: project.color }}></span>
+              Sobre esta Estrategia
+            </h2>
+            <p className="text-lg text-gray-600 leading-relaxed mb-10 text-justify">
               {project.longDesc}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {project.stats.map((stat, idx) => (
-                <div key={idx} className="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center">
-                  <div className="text-3xl font-extrabold text-gray-900 mb-1" style={{ color: project.color }}>
+                <div key={idx} className="bg-stone-50 p-5 rounded-2xl border border-stone-100 text-center hover:shadow-md transition-shadow">
+                  <div className="text-3xl font-extrabold mb-1" style={{ color: project.color }}>
                     {stat.number}
                   </div>
-                  <div className="text-xs font-bold text-gray-400 uppercase">{stat.label}</div>
+                  <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">{stat.label}</div>
                 </div>
               ))}
             </div>
 
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Galería del Programa</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Galería del Programa</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {project.gallery.map((img, idx) => (
-                <img 
-                  key={idx} 
-                  src={img} 
-                  alt={`Galería ${idx}`} 
-                  className="rounded-xl w-full h-48 object-cover hover:scale-105 transition-transform duration-500 cursor-pointer shadow-md"
-                  onError={(e) => e.target.src = "https://images.unsplash.com/photo-1516307365426-bea591f05011?q=80&w=500"}
-                />
+                <div key={idx} className="overflow-hidden rounded-xl h-64 group">
+                  <img 
+                    src={img} 
+                    alt={`Galería ${idx}`} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    onError={(e) => e.target.src = "https://images.unsplash.com/photo-1516307365426-bea591f05011?q=80&w=500"}
+                  />
+                </div>
               ))}
             </div>
           </div>
 
           <div className="lg:col-span-1">
-            <div className="bg-white p-8 rounded-3xl shadow-xl border-t-8 sticky top-24" style={{ borderColor: project.color }}>
+            <div className="bg-white p-8 rounded-3xl shadow-xl border-t-8 sticky top-8" style={{ borderColor: project.color }}>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Apoya esta causa</h3>
-              <p className="text-gray-500 mb-6 text-sm">Tu aporte va dirigido 100% a este programa específico.</p>
+              <p className="text-gray-500 mb-6 text-sm">
+                Tu aporte nos ayuda a sostener las actividades de <strong>{project.title}</strong>.
+              </p>
               
               <ul className="space-y-4 mb-8">
-                <li className="flex items-center gap-3 text-gray-600"><CheckCircle size={20} className="text-green-500" /> Donación segura</li>
-                <li className="flex items-center gap-3 text-gray-600"><CheckCircle size={20} className="text-green-500" /> Certificado de donación</li>
-                <li className="flex items-center gap-3 text-gray-600"><CheckCircle size={20} className="text-green-500" /> Reporte de impacto</li>
+                <li className="flex items-center gap-3 text-gray-600 text-sm">
+                  <CheckCircle size={18} className="text-green-500 shrink-0" /> Donación 100% segura
+                </li>
+                <li className="flex items-center gap-3 text-gray-600 text-sm">
+                  <CheckCircle size={18} className="text-green-500 shrink-0" /> Certificado de donación
+                </li>
+                <li className="flex items-center gap-3 text-gray-600 text-sm">
+                  <CheckCircle size={18} className="text-green-500 shrink-0" /> Impacto directo local
+                </li>
               </ul>
 
-              {/* ENLACE FUNCIONAL A LA SECCIÓN DE DONACIÓN */}
-              <Link to="/#donar" className="block w-full">
-                <Button variant="primary" className="w-full justify-center mb-4 text-white" style={{ backgroundColor: project.color }}>
-                  <Heart className="w-4 h-4 mr-2 fill-white" /> Donar Ahora
-                </Button>
-              </Link>
-              
-              <a 
-                href="https://wa.me/573145520393" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="flex items-center justify-center gap-2 text-center text-gray-400 hover:text-gray-600 text-sm font-medium hover:underline"
+              <Button 
+                variant="primary" 
+                className="w-full justify-center mb-4 py-4 text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all" 
+                style={{ backgroundColor: project.color, borderColor: project.color }}
+                onClick={() => setIsModalOpen(true)}
               >
-                <MessageCircle size={16} /> ¿Tienes dudas? Contáctanos
-              </a>
+                <Heart className="w-5 h-5 mr-2 fill-white animate-pulse" /> patrocinar
+              </Button>
+              
+              <div className="text-center">
+                <p className="text-xs text-gray-400 mb-2">¿Quieres ser voluntario en este programa?</p>
+                <button 
+                  onClick={() => setIsModalOpen(true)}
+                  className="text-gray-500 hover:text-gray-800 text-sm font-medium underline decoration-dotted"
+                >
+                  Postúlate aquí
+                </button>
+              </div>
             </div>
           </div>
 

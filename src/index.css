@@ -19,3 +19,42 @@
     transform: translateY(0);
   }
 }
+/* --- AGREGAR AL FINAL DE src/index.css --- */
+
+/* Animación para el efecto de cinta infinita */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Se mueve la mitad porque duplicamos la lista */
+}
+
+.animate-scroll {
+  animation: scroll 40s linear infinite; /* 40s es la velocidad, ajústalo a tu gusto */
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused; /* Se detiene si el usuario pone el mouse encima */
+}
+
+
+/* --- AL FINAL DE src/index.css --- */
+
+/* ... (tus animaciones de blob anteriores) ... */
+
+/* NUEVA ANIMACIÓN: Zoom Suave con Desvanecimiento */
+@keyframes zoom-fade-in {
+  0% { 
+    opacity: 0;
+    transform: scale(0.97) translateY(10px); /* Empieza un poco más pequeño y abajo */
+    filter: blur(2px); /* Un ligero desenfoque inicial */
+  }
+  100% { 
+    opacity: 1;
+    transform: scale(1) translateY(0); /* Termina en su tamaño normal y posición */
+    filter: blur(0);
+  }
+}
+
+.animate-zoom-fade-in {
+  /* Duración de 0.8s y curva 'ease-out' para que frene suavemente al final */
+  animation: zoom-fade-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}

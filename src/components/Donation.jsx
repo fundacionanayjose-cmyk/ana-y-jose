@@ -6,10 +6,11 @@ import {
 import Button from './Button';
 import { generateCertificate } from '../utils/pdfGenerator';
 
+// MODIFICACIÓN: Se eliminó la propiedad 'impact' de las opciones
 const DONATION_OPTIONS = [
-  { value: '50000', label: '$50.000', impact: '5 Almuerzos calientes' },
-  { value: '100000', label: '$100.000', impact: 'Atención médica básica' },
-  { value: '200000', label: '$200.000', impact: 'Mercado mensual completo' },
+  { value: '50000', label: '$50.000' },
+  { value: '100000', label: '$100.000' },
+  { value: '200000', label: '$200.000' },
 ];
 
 const Donation = () => {
@@ -27,7 +28,7 @@ const Donation = () => {
     email: '', 
     phone: '', 
     itemDescription: '', 
-    pickupAddress: ''     
+    pickupAddress: ''      
   });
   
   const wompiRef = useRef(null);
@@ -35,9 +36,7 @@ const Donation = () => {
   // ⚠️ TU URL DE GOOGLE SCRIPT (Asegúrate que sea la correcta)
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGfdW5Zw7Qx2aLfji0t5HihPg2RSTNt2X1-vc7HjZw-BGmUlthgCQbx76L2u-by1Ltkw/exec";
 
-  // ⚠️ LLAVE DE PRUEBA DE WOMPI (Para que aparezca el botón)
-  // Cuando tengas tu cuenta real, reemplaza esto por tu llave de producción.
-  // Si usas .env, cámbialo por: import.meta.env.VITE_WOMPI_PUBLIC_KEY
+  // ⚠️ LLAVE DE PRUEBA DE WOMPI
   const WOMPI_PUBLIC_KEY = "pub_test_Q5yDA9xoKdePzhSGeVe9HAez7CTS0223"; 
 
   const validateForm = () => {
@@ -69,7 +68,7 @@ const Donation = () => {
         : `Especie: ${donorData.itemDescription}`;
 
       const dataToSend = {
-        formType: 'donante', // CLAVE: Esto le dice al script que vaya a la hoja "Donantes"
+        formType: 'donante', 
         nombre: donorData.name,
         contacto: `${donorData.phone} | ${donorData.email}`,
         tipoDonacion: donationType === 'money' ? 'Dinero' : 'Especie',
@@ -78,7 +77,7 @@ const Donation = () => {
 
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors", // Esto es necesario para Google Scripts
+        mode: "no-cors", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSend)
       });
@@ -88,7 +87,6 @@ const Donation = () => {
 
     } catch (err) {
       console.error("Error guardando donante:", err);
-      // Permitimos continuar aunque falle el guardado para no perder la donación
       return true; 
     } finally {
       setIsSaving(false);
@@ -105,15 +103,12 @@ const Donation = () => {
 
   // --- LÓGICA DE WOMPI CORREGIDA ---
   useEffect(() => {
-    // Solo ejecutamos si estamos en el paso 2, es dinero y existe la referencia del div
     if (step === 2 && donationType === 'money' && wompiRef.current) {
       
-      // Limpiamos el contenedor por si acaso
       wompiRef.current.innerHTML = ''; 
       
       const finalAmount = customAmount || amount;
       
-      // Validación básica de monto
       if (!finalAmount || parseInt(finalAmount) < 1500) {
           wompiRef.current.innerHTML = '<p class="text-red-500 text-sm">El monto mínimo es $1.500</p>';
           return;
@@ -124,15 +119,15 @@ const Donation = () => {
       const script = document.createElement('script');
       script.src = 'https://checkout.wompi.co/widget.js';
       script.setAttribute('data-render', 'button');
-      script.setAttribute('data-public-key', WOMPI_PUBLIC_KEY); // Usamos la variable directa
+      script.setAttribute('data-public-key', WOMPI_PUBLIC_KEY); 
       script.setAttribute('data-currency', 'COP');
-      script.setAttribute('data-amount-in-cents', finalAmount + '00'); // Convertir a centavos
+      script.setAttribute('data-amount-in-cents', finalAmount + '00'); 
       script.setAttribute('data-reference', `DON-${Date.now()}-${donorData.id}`);
       script.setAttribute('data-redirect-url', window.location.href); 
       
       wompiRef.current.appendChild(script);
     }
-  }, [step, amount, customAmount, donorData.id, donationType]); // Dependencias del efecto
+  }, [step, amount, customAmount, donorData.id, donationType]); 
 
   const handleDownloadCertificate = async () => {
     await generateCertificate(donorData.name, donorData.id, customAmount || amount, donationType);
@@ -220,14 +215,14 @@ const Donation = () => {
                                  onClick={() => { setAmount(opt.value); setCustomAmount(''); }}
                                >
                                  <div className="font-extrabold text-lg">{opt.label}</div>
-                                 <div className="text-xs font-medium opacity-80">{opt.impact}</div>
+                                 {/* MODIFICACIÓN: Se eliminó el div que mostraba opt.impact */}
                                  {amount === opt.value && !customAmount && <div className="absolute top-2 right-2 text-rose-600"><CheckCircle size={16} /></div>}
                                </button>
                              ))}
                            </div>
                            <div className="relative mt-2">
-                              <span className="absolute left-4 top-3.5 text-gray-500 font-bold">$</span>
-                              <input type="number" className="w-full pl-8 p-3 border-2 rounded-xl outline-none transition-colors font-bold text-gray-700 border-gray-200 focus:border-rose-400" placeholder="Otro valor (COP)" value={customAmount} onChange={(e) => setCustomAmount(e.target.value)} />
+                             <span className="absolute left-4 top-3.5 text-gray-500 font-bold">$</span>
+                             <input type="number" className="w-full pl-8 p-3 border-2 rounded-xl outline-none transition-colors font-bold text-gray-700 border-gray-200 focus:border-rose-400" placeholder="Otro valor (COP)" value={customAmount} onChange={(e) => setCustomAmount(e.target.value)} />
                            </div>
                         </div>
                     </>

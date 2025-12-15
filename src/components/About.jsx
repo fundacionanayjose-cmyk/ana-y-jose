@@ -76,7 +76,13 @@ const About = () => {
           
           <div className="space-y-4 text-lg text-gray-600 leading-relaxed text-justify mb-8">
             <p>
-              Todo comenzó en el corazón de Bogotá, cuando Ana y José notaron cuántos de sus contemporáneos enfrentaban el atardecer de sus vidas en soledad. Lo que inició como almuerzos compartidos, hoy es una familia extendida.
+              La Fundación Ana y José nació el 2 de marzo de 2020, marcada por el dolor, la pérdida y la resistencia.
+
+Tras el fallecimiento de Ana Sobeida Orjuela, quien durante ocho años enfrentó el Alzheimer y el Parkinson, su hijo Gustavo Rodríguez quedó frente a un vacío profundo. Un dolor que se sumaba a heridas antiguas: en 2001, José Antonio Rodríguez había fallecido por un cáncer de garganta, después de una vida golpeada por la pobreza, el abandono del Estado y la violencia que obligó a muchas familias campesinas, como la suya, a desplazarse y empezar de nuevo.
+
+Ana y José fueron dos abuelos campesinos que, pese a la violencia, el desarraigo y las carencias, nunca se separaron. Resistieron juntos, defendiendo su hogar y luchando por sacar adelante a sus hijos cuando todo parecía estar en contra.
+
+De ese dolor nació la Fundación Ana y José: para transformar la pérdida en esperanza, para cuidar a los adultos mayores con dignidad y para que en Colombia ninguna familia vuelva a romperse por la violencia, el abandono o la soledad.
             </p>
           </div>
 
@@ -104,9 +110,10 @@ const About = () => {
           
           {/* CONTADORES */}
           <div className="grid grid-cols-3 gap-3 border-t border-gray-200 pt-8">
-            <SmartCounter end={15} label="Años sirviendo" icon={Calendar} />
-            <SmartCounter end={120} label="Abuelos felices" icon={Users} />
-            <SmartCounter end={8500} label="Comidas/mes" icon={Utensils} />
+            <SmartCounter end={6} label="Años sirviendo" icon={Calendar} />
+            <SmartCounter end={7500} label="Personas Inpactadas" icon={Users} />
+            <SmartCounter end={3000} label="Raciones alimentarias " icon={Utensils} />
+            
           </div>
         </div>
       </div>

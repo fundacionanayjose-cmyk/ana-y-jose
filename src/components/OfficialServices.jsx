@@ -241,7 +241,7 @@ const OfficialServices = () => {
                 Realizamos salidas de integración para fortalecer el tejido social, como el <strong>Tour a la Costa Atlántica</strong> y pasadías en Melgar.
               </p>
               <div className="bg-white border border-gray-100 p-3 rounded text-sm text-gray-700 shadow-sm">
-                [cite_start]<strong className="text-blue-900">Actividades incluidas:</strong> Transporte especializado, alimentación típica, caminatas ecológicas y espacios de reflexión espiritual [cite: 84-87].
+                <strong className="text-blue-900">Actividades incluidas:</strong> Transporte especializado, alimentación típica, caminatas ecológicas y espacios de reflexión espiritual .
               </div>
             </div>
 

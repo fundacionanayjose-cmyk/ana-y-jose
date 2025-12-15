@@ -4,9 +4,9 @@ import Button from './Button';
 
 const Hero = () => {
   const heroImages = [
-    "/galeria/20211120_111629_HDR.jpg", 
-    "/galeria/20211224_163500_HDR.jpg", 
-    "/galeria/20210503_205438.jpg",     
+    "/galeria/portada1.jpg", 
+    "/galeria/portada2.jpg", 
+    "/galeria/portada3.jpg",     
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -73,7 +73,7 @@ const Hero = () => {
         </h1>
 
         <p className="text-xl text-white mb-10 max-w-2xl mx-auto font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-          En la <strong>Fundación Ana y José</strong>, convertimos la soledad en compañía, el hambre en alimento y el olvido en esperanza.
+          En la <strong>Fundación Ana y José</strong>, convertimos la soledad en compañía, el hambre en alimento y el olvido en esperanza de nuestras personas Mayores .
         </p>
         
         {/* BOTONES */}
