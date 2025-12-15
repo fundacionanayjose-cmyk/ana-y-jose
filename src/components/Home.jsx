@@ -37,7 +37,7 @@ const Home = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ... (Funciones de modales igual que antes) ...
+  // Funciones de modales
   const openGeneralForm = () => {
     setFormBeneficiaryName(null);
     setIsFormModalOpen(true);
@@ -80,13 +80,16 @@ const Home = () => {
       {/* 2. AQUÍ AGREGAMOS LA HISTORIA DESPUÉS DE "NOSOTROS" */}
       <History /> 
 
-      {/* 3. AQUÍ AGREGAMOS EL MAPA (IMPORTANTE) */}
+      {/* 3. AQUÍ AGREGAMOS EL MAPA */}
       <ImpactMap />
 
       <SponsorSection onOpenModal={openBeneficiaryDetail} />
       
-      {/* 4. UN BANNER VISUAL PARA ROMPER LA MONOTONÍA */}
-      <ParallaxBanner />
+      {/* 4. AQUÍ ESTÁ LA CORRECCIÓN: AGREGAMOS PROPS AL BANNER PARA EVITAR EL ERROR 404 */}
+      <ParallaxBanner 
+        image="/galeria/20210503_205438.jpg" 
+        quote="El envejecimiento no es juventud perdida, sino una nueva etapa de oportunidad y fuerza." 
+      />
 
       <Team />
       <Programs />
