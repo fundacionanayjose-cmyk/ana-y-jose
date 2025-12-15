@@ -48,20 +48,6 @@ const Transparency = () => {
       type: "DOCX",
       fileUrl: "/legal/INFORME DE GESTION 2023.docx" 
     },
-    { 
-      title: "Estado de Cuenta", 
-      year: "2025", 
-      size: "36 KB", 
-      type: "PDF",
-      fileUrl: "/legal/Estado de cuenta.pdf" 
-    },
-    { 
-      title: "Misión, Visión y Valores", 
-      year: "2025", 
-      size: "123 KB", 
-      type: "DOCX",
-      fileUrl: "/legal/MISION-VISION-VALORES.docx" 
-    },
   ];
 
   return (

@@ -70,7 +70,7 @@ const Home = () => {
         onSponsor={handleSponsorFromDetail}
       />
       
-      <a href="https://wa.me/573000000000" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-transform hover:scale-110 flex items-center gap-2 group animate-bounce-slow"><Phone className="w-6 h-6 fill-current" /><span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap font-bold">¡Hablemos!</span></a>
+      <a href="https://wa.me/573145520393" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-transform hover:scale-110 flex items-center gap-2 group animate-bounce-slow"><Phone className="w-6 h-6 fill-current" /><span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap font-bold">¡Hablemos!</span></a>
       
       <Navbar scrolled={scrolled} logoUrl={logoUrl} onOpenModal={openGeneralForm} />
       <Hero onPrimaryAction={openGeneralForm} />

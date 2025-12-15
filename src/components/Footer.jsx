@@ -18,12 +18,16 @@ const Footer = ({ logoUrl }) => {
           {/* --- COLUMNA 1: IDENTIDAD --- */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <img 
-                src={logoUrl} 
-                alt="Logo Fundación Ana y José" 
-                className="h-14 w-auto object-contain brightness-0 invert opacity-90" 
-              />
-              <span className="text-xl font-bold text-white tracking-tight">
+              {/* CORRECCIÓN: Eliminamos filtros (brightness/invert) para mostrar logo original */}
+              {/* Agregamos bg-white/5 p-2 rounded si el logo es muy oscuro, si no, se puede quitar */}
+              <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
+                <img 
+                  src={logoUrl} 
+                  alt="Logo Fundación Ana y José" 
+                  className="h-16 w-auto object-contain" 
+                />
+              </div>
+              <span className="text-xl font-bold text-white tracking-tight leading-tight">
                 Fundación <br/> Ana y José
               </span>
             </div>
@@ -104,7 +108,7 @@ const Footer = ({ logoUrl }) => {
             <h4 className="text-white font-bold text-lg mb-6">Nuestra Sede</h4>
             <div className="w-full h-48 rounded-2xl overflow-hidden shadow-lg border border-gray-700 hover:border-rose-500 transition-colors duration-300 relative group">
               <a 
-                href="https://goo.gl/maps/tu-enlace-aqui" // Puedes poner el link real de Google Maps aquí
+                href="https://goo.gl/maps/tu-enlace-aqui" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity"

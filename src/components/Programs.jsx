@@ -1,29 +1,27 @@
 import React from 'react';
-import { ArrowRight, BookOpen, Palette, Users, Sun, Stethoscope, HandHeart } from 'lucide-react'; // Importamos iconos aquí
+import { ArrowRight, Sun } from 'lucide-react'; // Solo necesitamos iconos utilitarios
 import { Link } from 'react-router-dom';
 import { programsData } from '../data/programs';
-
-// Mapa de iconos
-const iconMap = {
-  BookOpen,
-  Palette,
-  Users,
-  Sun,
-  Stethoscope,
-  HandHeart
-};
 
 const Programs = () => {
   return (
     <section id="programas" className="py-20 bg-white">
-      {/* ... (Header igual) ... */}
       <div className="container mx-auto px-6">
-        {/* ... (Títulos iguales) ... */}
+        <div className="text-center mb-16">
+          <span className="text-rose-600 font-bold uppercase tracking-wider text-sm">
+            Nuestros Pilares
+          </span>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2 mb-4">
+            Programas Sociales
+          </h2>
+          <div className="w-24 h-1 bg-yellow-400 mx-auto rounded-full"></div>
+        </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {programsData.map((program) => {
-            // Buscamos el icono correcto usando el nombre que guardamos
-            const IconComponent = iconMap[program.icon] || Sun; 
+            // CORRECCIÓN: Usamos directamente el icono que viene en los datos
+            // Ya no hace falta el iconMap porque program.icon YA ES el componente
+            const IconComponent = program.icon || Sun; 
 
             return (
               <div key={program.id} className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col">

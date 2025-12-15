@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Partners = () => {
-  // Lista de Patrocinadores con las IMÁGENES REALES de tu carpeta galeria
+  // Lista VERIFICADA con tu directorio real
   const partners = [
     { 
       name: "Alcaldía de Bogotá", 
@@ -25,7 +25,6 @@ const Partners = () => {
     }
   ];
 
-  // Duplicamos la lista para crear el efecto infinito sin cortes
   const loopPartners = [...partners, ...partners, ...partners];
 
   return (
@@ -34,9 +33,7 @@ const Partners = () => {
         <h3 className="text-lg font-bold text-gray-400 uppercase tracking-widest">Nuestros Aliados y Patrocinadores</h3>
       </div>
       
-      {/* Contenedor del Carrusel */}
       <div className="relative w-full flex overflow-hidden">
-        {/* Pista de deslizamiento */}
         <div className="flex animate-marquee whitespace-nowrap gap-16 items-center">
           {loopPartners.map((partner, index) => (
             <div key={index} className="flex flex-col items-center justify-center w-32 md:w-48 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">
@@ -46,7 +43,7 @@ const Partners = () => {
                 className="h-16 md:h-20 object-contain"
                 loading="lazy"
                 onError={(e) => {
-                  e.target.style.display = 'none'; // Oculta si falla
+                  e.target.style.display = 'none';
                   console.error(`Error cargando logo: ${partner.logo}`);
                 }}
               />
@@ -55,7 +52,6 @@ const Partners = () => {
         </div>
       </div>
       
-      {/* Estilos Inline para la animación */}
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }

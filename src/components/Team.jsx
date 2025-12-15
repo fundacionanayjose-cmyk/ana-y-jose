@@ -6,22 +6,8 @@ const TeamSection = () => {
 
   // DATOS REALES BASADOS EN EL DOCUMENTO CIAMAJ
   const teamMembers = [
-    {
-      id: 1,
-      name: "Gustavo Rodríguez Orjuela",
-      role: "Director y Representante Legal",
-      // Foto sugerida de oficina/directiva
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800",
-      bio: "Como Director y Representante Legal, lidera la misión de 'Reconstruir Sonrisas Perdidas'. Se encarga de la gestión estratégica, alianzas interinstitucionales y de velar porque cada recurso se destine al bienestar integral de los adultos mayores de la localidad de Kennedy."
-    },
-    {
-      id: 2,
-      name: "Equipo Psicosocial",
-      role: "Psicología y Trabajo Social",
-      // Foto sugerida de equipo de trabajo
-      image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=800",
-      bio: "Nuestros profesionales en Psicología y Trabajo Social son el soporte emocional de la fundación. Lideran los talleres de memoria, gestión de emociones, 'Perdón y Reconciliación', y fortalecen las redes de apoyo familiar y comunitario."
-    },
+ 
+ 
     {
       id: 3,
       name: "Profesionales de Salud",

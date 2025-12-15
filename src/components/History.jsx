@@ -6,7 +6,7 @@ const milestones = [
     id: 'h-2020',
     year: "2020",
     title: "El Nacimiento de un Sueño",
-    description: "En medio de la incertidumbre global, nos constituimos legalmente el 2 de marzo. Nacimos con una misión clara: ser el refugio y la familia de los abuelos olvidados de Bogotá.",
+    description: "En medio de la incertidumbre global, nos constituimos legalmente el 2 de marzo. Nacimos con una misión clara: ser el refugio y la familia de los abuelos olvidados de Bogotá llegando con acompañamiento psicosocial y ayudas tecnicas a personas mayores y personas con discapacidad.",
     icon: Star,
     color: "bg-yellow-400",
     image: "/galeria/IMG20250805144021 (1).jpg"
@@ -15,7 +15,7 @@ const milestones = [
     id: 'h-2021',
     year: "2021",
     title: "Manos a la Obra en Pandemia",
-    description: "Mientras el mundo se detenía, nosotros avanzamos. Llegamos a barrios como Patio Bonito y Techo Bavaria II, llevando alimentos y esperanza a quienes más lo necesitaban.",
+    description: "Mientras el mundo se detenía, nosotros avanzamos.llevando mas de 5500 raciones alimentarias a los diferente hogares de la localidad de kennedy,bosa,ciudad bolivar y cuidades como fresno tolima y mansanares caldas.",
     icon: Heart,
     color: "bg-rose-500",
     image: "/galeria/20210503_205438.jpg"
