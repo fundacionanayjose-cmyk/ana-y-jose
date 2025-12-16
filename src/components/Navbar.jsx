@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; 
 import { Menu, X, Heart } from 'lucide-react';
-import Button from './Button';
 
 const Navbar = ({ scrolled, logoUrl, onOpenModal }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,6 +9,7 @@ const Navbar = ({ scrolled, logoUrl, onOpenModal }) => {
     { name: 'Inicio', href: '/' },
     { name: 'Nosotros', href: '/#nosotros' },
     { name: 'Programas', href: '/#programas' },
+    { name: 'Inscripciones', href: '/inscripciones' }, 
     { name: 'Equipo', href: '/#equipo' },
     { name: 'Transparencia', href: '/#transparencia' },
   ];
@@ -22,7 +22,7 @@ const Navbar = ({ scrolled, logoUrl, onOpenModal }) => {
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
         
-        {/* LOGO: Siempre a color, sin filtros extraños */}
+        {/* LOGO */}
         <Link to="/" className="flex items-center gap-2 group">
           <img 
             src={logoUrl} 
@@ -45,13 +45,13 @@ const Navbar = ({ scrolled, logoUrl, onOpenModal }) => {
             </a>
           ))}
           
-          {/* BOTÓN DONAR PERSONALIZADO: AMARILLO/ROJO */}
+          {/* BOTÓN DONAR */}
           <button
             onClick={onOpenModal}
             className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold shadow-lg transition-all duration-300 transform hover:-translate-y-1 ${
               scrolled 
-                ? 'bg-amber-400 text-white hover:bg-rose-600' // SCROLL: Amarillo -> Rojo al pasar mouse
-                : 'bg-white text-rose-600 hover:bg-amber-100' // ARRIBA: Blanco -> Amarillo suave al pasar mouse
+                ? 'bg-amber-400 text-white hover:bg-rose-600' 
+                : 'bg-white text-rose-600 hover:bg-amber-100'
             }`}
           >
             <Heart className={`w-4 h-4 ${scrolled ? 'fill-white' : 'fill-rose-600'}`} /> 

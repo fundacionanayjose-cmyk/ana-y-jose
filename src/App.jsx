@@ -1,30 +1,24 @@
-import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
-// --- IMPORTACIÓN DINÁMICA (LAZY LOADING) ---
-// Optimización para que la página cargue rápido
-const Home = lazy(() => import('./components/Home'));
-const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
-const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
-const Terms = lazy(() => import('./components/Terms'));
-const AdminLayout = lazy(() => import('./components/AdminLayout')); // Panel Administrativo
-const NotFound = lazy(() => import('./components/NotFound'));
+// Componentes Públicos
+import Home from './components/Home';
+import Registration from './components/Registration';
+import ProjectDetail from './components/ProjectDetail';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import Terms from './components/Terms';
+import NotFound from './components/NotFound';
 
-// --- PANTALLA DE CARGA ---
-const LoadingScreen = () => (
-  <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 transition-opacity duration-500">
-    <div className="relative">
-      <div className="absolute inset-0 bg-rose-200 rounded-full blur-xl opacity-50 animate-pulse"></div>
-      <Heart className="w-16 h-16 text-rose-600 relative z-10 animate-bounce fill-current" />
-    </div>
-    <p className="mt-6 text-rose-800 font-bold text-sm tracking-[0.2em] uppercase animate-pulse">
-      Cargando Esperanza...
-    </p>
-  </div>
-);
+// Componentes de Administración (Protegidos)
+import AdminLayout from './components/AdminLayout';
+import AdminLogin from './components/AdminLogin';
+import AdminDashboard from './components/AdminDashboard';
 
-// --- UTILIDAD: SCROLL AL INICIO AL CAMBIAR DE RUTA ---
+// Utilidad ScrollToTop
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -33,30 +27,34 @@ const ScrollToTop = () => {
   return null;
 };
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      
-      <Suspense fallback={<LoadingScreen />}>
+    <HelmetProvider>
+      <BrowserRouter>
+        <ScrollToTop />
         <Routes>
-          {/* Rutas Públicas */}
+          {/* --- RUTAS PÚBLICAS --- */}
           <Route path="/" element={<Home />} />
+          <Route path="/inscripciones" element={<Registration />} />
           <Route path="/proyecto/:id" element={<ProjectDetail />} />
-          
-          {/* Rutas Legales */}
           <Route path="/politica-privacidad" element={<PrivacyPolicy />} />
           <Route path="/terminos-condiciones" element={<Terms />} />
-          
-          {/* Ruta Privada (Admin) */}
-          <Route path="/admin" element={<AdminLayout />} />
-          
-          {/* Error 404 */}
+
+          {/* --- RUTAS DE ADMINISTRACIÓN --- */}
+          {/* Login público para admins */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+
+          {/* Zona Protegida: Requiere sesión activa */}
+          <Route path="/admin" element={<AdminLayout />}>
+             <Route index element={<AdminDashboard />} />
+          </Route>
+
+          {/* --- 404 --- */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </Suspense>
-    </Router>
+      </BrowserRouter>
+    </HelmetProvider>
   );
-};
+}
 
 export default App;
