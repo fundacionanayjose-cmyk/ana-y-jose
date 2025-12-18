@@ -4,9 +4,9 @@ import {
   User, AlertTriangle, Phone, Mail, Package, Heart, Globe 
 } from 'lucide-react';
 import Button from './Button';
+// IMPORTANTE: Importamos la función generadora
 import { generateCertificate } from '../utils/pdfGenerator';
 
-// MODIFICACIÓN: Se eliminó la propiedad 'impact' de las opciones
 const DONATION_OPTIONS = [
   { value: '50000', label: '$50.000' },
   { value: '100000', label: '$100.000' },
@@ -32,11 +32,7 @@ const Donation = () => {
   });
   
   const wompiRef = useRef(null);
-
-  // ⚠️ TU URL DE GOOGLE SCRIPT (Asegúrate que sea la correcta)
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGfdW5Zw7Qx2aLfji0t5HihPg2RSTNt2X1-vc7HjZw-BGmUlthgCQbx76L2u-by1Ltkw/exec";
-
-  // ⚠️ LLAVE DE PRUEBA DE WOMPI
   const WOMPI_PUBLIC_KEY = "pub_test_Q5yDA9xoKdePzhSGeVe9HAez7CTS0223"; 
 
   const validateForm = () => {
@@ -59,8 +55,6 @@ const Donation = () => {
 
   const saveToDatabase = async () => {
     setIsSaving(true);
-    console.log("Intentando guardar en Google Sheets...");
-
     try {
       const finalAmount = customAmount || amount;
       const descripcionDetallada = donationType === 'money' 
@@ -81,10 +75,7 @@ const Donation = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSend)
       });
-
-      console.log("Datos enviados al script (no-cors mode)");
       return true;
-
     } catch (err) {
       console.error("Error guardando donante:", err);
       return true; 
@@ -101,20 +92,15 @@ const Donation = () => {
     }
   };
 
-  // --- LÓGICA DE WOMPI CORREGIDA ---
   useEffect(() => {
     if (step === 2 && donationType === 'money' && wompiRef.current) {
-      
       wompiRef.current.innerHTML = ''; 
-      
       const finalAmount = customAmount || amount;
       
       if (!finalAmount || parseInt(finalAmount) < 1500) {
           wompiRef.current.innerHTML = '<p class="text-red-500 text-sm">El monto mínimo es $1.500</p>';
           return;
       }
-
-      console.log("Cargando Widget de Wompi...");
 
       const script = document.createElement('script');
       script.src = 'https://checkout.wompi.co/widget.js';
@@ -124,13 +110,14 @@ const Donation = () => {
       script.setAttribute('data-amount-in-cents', finalAmount + '00'); 
       script.setAttribute('data-reference', `DON-${Date.now()}-${donorData.id}`);
       script.setAttribute('data-redirect-url', window.location.href); 
-      
       wompiRef.current.appendChild(script);
     }
   }, [step, amount, customAmount, donorData.id, donationType]); 
 
+  // --- NUEVA FUNCIÓN CONECTADA ---
   const handleDownloadCertificate = async () => {
-    await generateCertificate(donorData.name, donorData.id, customAmount || amount, donationType);
+    const finalAmount = customAmount || amount;
+    await generateCertificate(donorData.name, donorData.id, finalAmount, donationType);
   };
 
   const handleInKindCoordination = () => {
@@ -215,7 +202,6 @@ const Donation = () => {
                                  onClick={() => { setAmount(opt.value); setCustomAmount(''); }}
                                >
                                  <div className="font-extrabold text-lg">{opt.label}</div>
-                                 {/* MODIFICACIÓN: Se eliminó el div que mostraba opt.impact */}
                                  {amount === opt.value && !customAmount && <div className="absolute top-2 right-2 text-rose-600"><CheckCircle size={16} /></div>}
                                </button>
                              ))}
@@ -261,11 +247,9 @@ const Donation = () => {
                             <p className="text-gray-500 text-sm">Donación: <span className="font-bold text-rose-600">${parseInt(customAmount || amount).toLocaleString()} COP</span></p>
                         </div>
                         
-                        {/* CONTENEDOR WOMPI */}
                         <div className="bg-white border rounded-xl p-4 text-center shadow-sm">
                             <p className="font-bold text-gray-700 mb-2 text-sm">Tarjetas / PSE / Nequi / Bancolombia</p>
                             <div className="min-h-[50px] flex items-center justify-center">
-                                {/* AQUÍ SE INYECTA EL BOTÓN WOMPI */}
                                 <form ref={wompiRef}></form>
                             </div>
                         </div>
@@ -296,6 +280,7 @@ const Donation = () => {
                 <h3 className="text-3xl font-extrabold text-gray-800 mb-2">¡Misión Cumplida!</h3>
                 <p className="text-gray-600 mb-8 max-w-md mx-auto">Tu generosidad transforma vidas.</p>
                 
+                {/* BOTÓN DESCARGAR CERTIFICADO CONECTADO */}
                 {donationType === 'money' && (
                     <button onClick={handleDownloadCertificate} className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl shadow-xl flex items-center justify-center gap-3 hover:bg-gray-800 transition-colors">
                       <Download className="w-6 h-6" /> Descargar Certificado

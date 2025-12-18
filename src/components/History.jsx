@@ -6,7 +6,7 @@ const milestones = [
     id: 'h-2020',
     year: "2020",
     title: "El Nacimiento de un Sueño",
-    description: "En medio de la incertidumbre global, nos constituimos legalmente el 2 de marzo. Nacimos con una misión clara: ser el refugio y la familia de los abuelos olvidados de Bogotá llegando con acompañamiento psicosocial y ayudas tecnicas a personas mayores y personas con discapacidad.",
+    description: "En medio de la incertidumbre global, nos constituimos legalmente el 2 de marzo. Nacimos con una misión clara: ser el refugio y la familia de los adultos mayores olvidados de Bogotá llegando con acompañamiento psicosocial y ayudas técnicas a personas mayores y personas con discapacidad.",
     icon: Star,
     color: "bg-yellow-400",
     image: "/galeria/IMG20250805144021 (1).jpg"
@@ -15,7 +15,7 @@ const milestones = [
     id: 'h-2021',
     year: "2021",
     title: "Manos a la Obra en Pandemia",
-    description: "Mientras el mundo se detenía, nosotros avanzamos.llevando mas de 5500 raciones alimentarias a los diferente hogares de la localidad de kennedy,bosa,ciudad bolivar y cuidades como fresno tolima y mansanares caldas.",
+    description: "Mientras el mundo se detenía, nosotros avanzamos llevando más de 5500 raciones alimentarias a los diferentes hogares de la localidad de Kennedy, Bosa, Ciudad Bolívar y ciudades como Fresno (Tolima) y Manzanares (Caldas).",
     icon: Heart,
     color: "bg-rose-500",
     image: "/galeria/20210503_205438.jpg"
@@ -51,14 +51,12 @@ const milestones = [
 
 const History = () => {
   const [activeImage, setActiveImage] = useState(milestones[0].image);
-  
-  // Referencias para los observadores
   const itemsRef = useRef([]);
 
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '-40% 0px -40% 0px', // Zona central de detección
+      rootMargin: '-40% 0px -40% 0px', 
       threshold: 0
     };
 
@@ -84,9 +82,6 @@ const History = () => {
 
   return (
     <section className="relative w-full">
-      
-      {/* --- FONDO DINÁMICO (STICKY) --- */}
-      {/* Se queda fijo al fondo mientras haces scroll */}
       <div className="sticky top-0 w-full h-screen overflow-hidden -z-10">
         {milestones.map((item) => (
           <div
@@ -97,13 +92,10 @@ const History = () => {
             style={{ backgroundImage: `url('${item.image}')` }}
           />
         ))}
-        {/* Overlay blanco suave para que el diseño original (tarjetas blancas) resalte bien */}
         <div className="absolute inset-0 bg-white/30 backdrop-blur-sm"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white/80"></div>
       </div>
 
-      {/* --- CONTENIDO (DISEÑO ORIGINAL ZIG-ZAG) --- */}
-      {/* Margen negativo para montarse sobre el sticky */}
       <div className="container mx-auto px-6 py-24 relative z-10 -mt-[100vh]"> 
         
         <div className="text-center mb-16 animate-fade-in-up">
@@ -119,7 +111,6 @@ const History = () => {
         </div>
 
         <div className="relative max-w-4xl mx-auto pb-20">
-          {/* Línea vertical central */}
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gray-300 transform md:-translate-x-1/2"></div>
 
           {milestones.map((item, index) => {
@@ -131,16 +122,12 @@ const History = () => {
                 ref={el => itemsRef.current[index] = el} 
                 className={`relative flex items-center justify-between mb-12 md:mb-24 ${isEven ? 'md:flex-row-reverse' : ''}`}
               >
-                
-                {/* Espacio vacío para alternar lados */}
                 <div className="hidden md:block w-5/12"></div>
 
-                {/* Punto central (Icono) */}
                 <div className={`absolute left-0 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full border-4 border-white shadow-xl z-10 ${item.color} text-white transition-transform duration-500 hover:scale-110`}>
                   <item.icon size={20} strokeWidth={2.5} />
                 </div>
 
-                {/* Tarjeta de Contenido (DISEÑO ORIGINAL RESTAURADO) */}
                 <div className="w-full md:w-5/12 pl-16 md:pl-0">
                   <div className={`
                     bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white/50 

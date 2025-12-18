@@ -37,7 +37,8 @@ const Hero = () => {
   };
 
   return (
-    <header id="inicio" className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-gray-900">
+    // CORRECCIÓN: 'supports-[height:100dvh]:h-[100dvh]' asegura que ocupe la pantalla completa real en móviles
+    <header id="inicio" className="relative h-screen supports-[height:100dvh]:h-[100dvh] min-h-[600px] flex items-center justify-center overflow-hidden bg-gray-900">
       
       {/* FONDO (CARRUSEL) */}
       <div className="absolute inset-0 z-0">
@@ -52,10 +53,12 @@ const Hero = () => {
           />
         ))}
         
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-black/30 to-black/10"></div>
+        {/* Overlay oscuro para legibilidad */}
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-black/40 to-black/20"></div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 text-center mt-20 animate-fade-in-up">
+      {/* CONTENIDO PRINCIPAL (Aseguramos Z-20 para que esté siempre encima) */}
+      <div className="container mx-auto px-6 relative z-20 text-center mt-20 animate-fade-in-up">
         
         <div className="inline-block animate-fade-in-up mb-6">
           <span className="bg-rose-600/90 backdrop-blur-sm text-white py-1 px-4 rounded-full text-sm font-bold tracking-widest inline-block uppercase shadow-lg border border-rose-500/50">
@@ -93,6 +96,7 @@ const Hero = () => {
         </div>
       </div>
       
+      {/* DIVIDER INFERIOR (Ondas) */}
       <div className="absolute bottom-0 w-full overflow-hidden leading-[0] z-20">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[60px] md:h-[100px] fill-stone-50">
           <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>

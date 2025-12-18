@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Target, Lightbulb, Users, Utensils, Calendar } from 'lucide-react';
 
-// Sub-componente Contador Inteligente (Sin cambios en lógica)
 const SmartCounter = ({ end, label, icon: Icon }) => {
   const [count, setCount] = useState(0);
   const elementRef = useRef(null);
@@ -52,12 +51,10 @@ const About = () => {
     <section id="nosotros" className="py-20 container mx-auto px-6 bg-stone-50">
       <div className="grid md:grid-cols-2 gap-16 items-start">
         
-        {/* IMAGEN DE FUNDADORES / ADMINISTRACIÓN */}
-        <div className="relative group sticky top-24">
+        <div className="relative group md:sticky md:top-24">
           <div className="absolute -top-4 -left-4 w-24 h-24 bg-yellow-400 rounded-full opacity-20 blur-xl group-hover:scale-150 transition-all duration-700"></div>
           <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-600 rounded-full opacity-20 blur-xl group-hover:scale-150 transition-all duration-700"></div>
           
-          {/* CAMBIO: Ruta a imagen real en public/galeria */}
           <img 
             src="/galeria/20210527_091046.jpg" 
             alt="Administración Fundación Ana y José" 
@@ -69,51 +66,51 @@ const About = () => {
           </div>
         </div>
         
-        {/* TEXTO + MISIÓN/VISIÓN + CONTADORES */}
         <div>
-          <span className="text-rose-600 font-bold uppercase tracking-wider text-sm mb-2 block">Nuestra Esencia</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">El Legado de <br/> La Fundacion Ana y José</h2>
+          <span className="text-rose-600 font-bold uppercase tracking-wider text-sm mb-2 block">Nuestra esencia</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">El legado de la <br/> Fundación Ana y José</h2>
           
           <div className="space-y-4 text-lg text-gray-600 leading-relaxed text-justify mb-8">
             <p>
               La Fundación Ana y José nació el 2 de marzo de 2020, marcada por el dolor, la pérdida y la resistencia.
-
-Tras el fallecimiento de Ana Sobeida Orjuela, quien durante ocho años enfrentó el Alzheimer y el Parkinson, su hijo Gustavo Rodríguez quedó frente a un vacío profundo. Un dolor que se sumaba a heridas antiguas: en 2001, José Antonio Rodríguez había fallecido por un cáncer de garganta, después de una vida golpeada por la pobreza, el abandono del Estado y la violencia que obligó a muchas familias campesinas, como la suya, a desplazarse y empezar de nuevo.
-
-Ana y José fueron dos abuelos campesinos que, pese a la violencia, el desarraigo y las carencias, nunca se separaron. Resistieron juntos, defendiendo su hogar y luchando por sacar adelante a sus hijos cuando todo parecía estar en contra.
-
-De ese dolor nació la Fundación Ana y José: para transformar la pérdida en esperanza, para cuidar a los adultos mayores con dignidad y para que en Colombia ninguna familia vuelva a romperse por la violencia, el abandono o la soledad.
+            </p>
+            <p>
+              Tras el fallecimiento de Ana Sobeida Orjuela, quien durante ocho años enfrentó el Alzheimer y el Parkinson, su hijo Gustavo Rodríguez quedó frente a un vacío profundo. Un dolor que se sumaba a heridas antiguas: en 2001, José Antonio Rodríguez había fallecido por un cáncer de garganta, después de una vida golpeada por la pobreza, el abandono del Estado y la violencia que obligó a muchas familias campesinas, como la suya, a desplazarse y empezar de nuevo.
+            </p>
+            <p>
+              Ana y José fueron dos adultos mayores campesinos que, pese a la violencia, el desarraigo y las carencias, nunca se separaron. Resistieron juntos, defendiendo su hogar y luchando por sacar adelante a sus hijos cuando todo parecía estar en contra.
+            </p>
+            <p>
+              De ese dolor nació la Fundación Ana y José: para transformar la pérdida en esperanza, para cuidar a los adultos mayores con dignidad y para que en Colombia ninguna familia vuelva a romperse por la violencia, el abandono o la soledad.
             </p>
           </div>
 
-          {/* TARJETAS MISIÓN Y VISIÓN */}
           <div className="grid sm:grid-cols-2 gap-4 mb-10">
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
-               <div className="flex items-center gap-2 mb-2">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
+               <div className="flex items-center gap-2 mb-3">
                  <Target className="w-5 h-5 text-rose-500 group-hover:scale-110 transition-transform" />
-                 <h3 className="font-bold text-gray-800">Misión</h3>
+                 <h3 className="font-bold text-gray-800 text-lg">Misión</h3>
                </div>
-               <p className="text-sm text-gray-600 leading-snug">
-                 Mejorar la calidad de vida de los adultos mayores vulnerables mediante alimentación digna, atención básica y compañía afectiva.
+               <p className="text-sm text-gray-600 leading-relaxed text-justify">
+                 Promover un envejecimiento activo, digno y feliz, desde el acompañamiento y la corresponsabilidad familiar, fomentando la inclusión, la participación, el fortalecimiento de redes de apoyo social, el bienestar psicológico y emocional.
                </p>
             </div>
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
-               <div className="flex items-center gap-2 mb-2">
+
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
+               <div className="flex items-center gap-2 mb-3">
                  <Lightbulb className="w-5 h-5 text-yellow-500 group-hover:scale-110 transition-transform" />
-                 <h3 className="font-bold text-gray-800">Visión</h3>
+                 <h3 className="font-bold text-gray-800 text-lg">Visión 2030</h3>
                </div>
-               <p className="text-sm text-gray-600 leading-snug">
-                 Ser una institución líder y autosostenible en Bogotá, fomentando una cultura de respeto y gratitud hacia nuestros abuelos.
+               <p className="text-sm text-gray-600 leading-relaxed text-justify">
+                 La Fundación Ana y José para el 2030 se consolidará como un referente en Colombia, para la promoción del cuidado de personas mayores, fortaleciendo el núcleo familiar mediante acciones de apoyo al cuidador, previniendo el abandono y el maltrato.
                </p>
             </div>
           </div>
           
-          {/* CONTADORES */}
           <div className="grid grid-cols-3 gap-3 border-t border-gray-200 pt-8">
             <SmartCounter end={6} label="Años sirviendo" icon={Calendar} />
-            <SmartCounter end={7500} label="Personas Inpactadas" icon={Users} />
-            <SmartCounter end={3000} label="Raciones alimentarias " icon={Utensils} />
-            
+            <SmartCounter end={7500} label="Personas impactadas" icon={Users} />
+            <SmartCounter end={3000} label="Raciones entregadas" icon={Utensils} />
           </div>
         </div>
       </div>

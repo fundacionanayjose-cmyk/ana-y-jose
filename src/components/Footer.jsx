@@ -9,6 +9,9 @@ const TikTokIcon = ({ className }) => (
 );
 
 const Footer = ({ logoUrl }) => {
+  // Enlace directo a la dirección en Google Maps
+  const mapLink = "https://www.google.com/maps/search/?api=1&query=Cl.+8+%2373-11,+Bogotá";
+
   return (
     <footer className="bg-gray-900 text-gray-300 pt-20 pb-10 border-t border-gray-800">
       <div className="container mx-auto px-6">
@@ -18,8 +21,6 @@ const Footer = ({ logoUrl }) => {
           {/* --- COLUMNA 1: IDENTIDAD --- */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              {/* CORRECCIÓN: Eliminamos filtros (brightness/invert) para mostrar logo original */}
-              {/* Agregamos bg-white/5 p-2 rounded si el logo es muy oscuro, si no, se puede quitar */}
               <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
                 <img 
                   src={logoUrl} 
@@ -51,9 +52,10 @@ const Footer = ({ logoUrl }) => {
                 <div className="bg-gray-800 p-2 rounded-full group-hover:bg-rose-600 transition-colors">
                   <MapPin className="w-5 h-5 text-rose-500 group-hover:text-white"/> 
                 </div>
-                <span className="text-sm group-hover:text-white transition-colors">
-                  Calle 8 # 73-11 <br/> Barrio Castilla, Bogotá
-                </span>
+                {/* DIRECCIÓN ACTUALIZADA */}
+                <a href={mapLink} target="_blank" rel="noopener noreferrer" className="text-sm group-hover:text-white transition-colors">
+                  Cl. 8 #73-11, Bogotá
+                </a>
               </li>
               <li className="flex items-center gap-3 group cursor-pointer hover:bg-gray-800 p-2 rounded-lg transition-colors -ml-2">
                 <div className="bg-gray-800 p-2 rounded-full group-hover:bg-green-500 transition-colors">
@@ -103,12 +105,12 @@ const Footer = ({ logoUrl }) => {
             </div>
           </div>
 
-          {/* --- COLUMNA 4: MAPA --- */}
+          {/* --- COLUMNA 4: MAPA (FUNCIONAL) --- */}
           <div className="lg:col-span-1">
             <h4 className="text-white font-bold text-lg mb-6">Nuestra Sede</h4>
             <div className="w-full h-48 rounded-2xl overflow-hidden shadow-lg border border-gray-700 hover:border-rose-500 transition-colors duration-300 relative group">
               <a 
-                href="https://goo.gl/maps/tu-enlace-aqui" 
+                href={mapLink} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -118,13 +120,14 @@ const Footer = ({ logoUrl }) => {
                 </span>
               </a>
 
+              {/* IFRAME EMBEBIDO CORRECTO */}
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.795646399564!2d-74.1456788!3d4.6305987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9c0657e2d93d%3A0x1c8b3f3b8b8b8b8b!2sCl.+8+%2373-11%2C+Bogot%C3%A1!5e0!3m2!1ses!2sco!4v1620000000000!5m2!1ses!2sco" 
+                src="https://maps.google.com/maps?q=Cl.+8+%2373-11,+Bogotá&t=&z=15&ie=UTF8&iwloc=&output=embed"
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 
                 allowFullScreen="" 
-                loading="lazy" 
+                loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Mapa Fundación Ana y José"
                 className="grayscale group-hover:grayscale-0 transition-all duration-700"
@@ -132,7 +135,7 @@ const Footer = ({ logoUrl }) => {
             </div>
             
             <a 
-              href="https://goo.gl/maps/tu-enlace-aqui" 
+              href={mapLink}
               target="_blank" 
               rel="noopener noreferrer"
               className="mt-4 w-full block text-center py-2 rounded-lg bg-gray-800 hover:bg-rose-600 text-gray-300 hover:text-white transition-colors text-sm font-bold"
@@ -153,7 +156,7 @@ const Footer = ({ logoUrl }) => {
              <Link to="/terminos-condiciones" className="hover:text-rose-500 transition-colors">Términos de Uso</Link>
              <span className="hidden md:inline">|</span>
              <p className="flex items-center gap-1">
-                Hecho con <Heart className="w-3 h-3 text-red-600 fill-current animate-pulse" /> para nuestros abuelos
+               Hecho con <Heart className="w-3 h-3 text-red-600 fill-current animate-pulse" /> para nuestros adultos mayores
              </p>
           </div>
         </div>

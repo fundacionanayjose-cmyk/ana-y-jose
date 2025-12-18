@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Heart, CheckCircle, BookOpen, Palette, Users, Sun, Stethoscope, HandHeart } from 'lucide-react'; // Importamos iconos
+import { ArrowLeft, Heart, CheckCircle, Sun } from 'lucide-react'; 
 import { programsData } from '../data/programs';
 import Button from './Button';
 import Modal from './Modal';
-
-// Mapa de iconos
-const iconMap = {
-  BookOpen,
-  Palette,
-  Users,
-  Sun,
-  Stethoscope,
-  HandHeart
-};
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -26,8 +16,7 @@ const ProjectDetail = () => {
 
   if (!project) return <div className="text-center py-20">Proyecto no encontrado</div>;
 
-  // Recuperamos el icono
-  const IconComponent = iconMap[project.icon] || Sun;
+  const IconComponent = project.icon || Sun;
 
   return (
     <div className="bg-stone-50 min-h-screen relative">
@@ -37,7 +26,7 @@ const ProjectDetail = () => {
         preSelectedBeneficiary={`Proyecto: ${project.title}`} 
       />
 
-      {/* ... (Navbar igual) ... */}
+      {/* Navbar simplificado para detalle */}
       <nav className="absolute top-0 w-full z-20 p-6 flex justify-between items-center text-white">
         <Link to="/" className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full hover:bg-black/40 transition-all border border-white/10">
           <ArrowLeft size={20} /> Volver al Inicio
@@ -60,7 +49,6 @@ const ProjectDetail = () => {
         </div>
       </header>
 
-      {/* ... (Resto del contenido igual que antes) ... */}
       <div className="container mx-auto px-6 py-12 relative z-10">
         <div className="grid lg:grid-cols-3 gap-12">
           
@@ -73,16 +61,7 @@ const ProjectDetail = () => {
               {project.longDesc}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              {project.stats.map((stat, idx) => (
-                <div key={idx} className="bg-stone-50 p-5 rounded-2xl border border-stone-100 text-center hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-extrabold mb-1" style={{ color: project.color }}>
-                    {stat.number}
-                  </div>
-                  <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+            {/* --- SECCIÓN DE MÉTRICAS ELIMINADA --- */}
 
             <h3 className="text-xl font-bold text-gray-900 mb-6">Galería del Programa</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -124,7 +103,7 @@ const ProjectDetail = () => {
                 style={{ backgroundColor: project.color, borderColor: project.color }}
                 onClick={() => setIsModalOpen(true)}
               >
-                <Heart className="w-5 h-5 mr-2 fill-white animate-pulse" /> patrocinar
+                <Heart className="w-5 h-5 mr-2 fill-white animate-pulse" /> Patrocinar
               </Button>
               
               <div className="text-center">

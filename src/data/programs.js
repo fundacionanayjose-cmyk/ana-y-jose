@@ -1,23 +1,22 @@
-import { BookOpen, Palette, Users, Sun, Stethoscope, HandHeart } from 'lucide-react';
+import { BookOpen, Palette, Users, Sun, Stethoscope, HeartHandshake } from 'lucide-react';
 
 export const programsData = [
   {
     id: 'envejecimiento-digno',
-    title: "Capacitación Envejecimiento Digno",
+    title: "Capacitación en Envejecimiento Digno",
     shortDesc: "Fortalecimiento cognitivo y emocional para la apropiación de derechos.",
     icon: BookOpen,
     color: "#e11d48",
-    // Foto de reunión/taller (indoor)
     heroImage: "/galeria/20210909_160146.jpg", 
     longDesc: "Busca el fortalecimiento de las competencias cognitivas tanto del adulto mayor como de sus familiares y cuidadores. Trabajamos temáticas psicosociales como la escucha activa, gestión de emociones y memoria histórica familiar.",
     stats: [
       { number: "25", label: "Participantes/Taller" },
-      { number: "2", label: "Sesiones Semanales" },
-      { number: "5", label: "Módulos Temáticos" }
+      { number: "2", label: "Sesiones semanales" },
+      { number: "5", label: "Módulos temáticos" }
     ],
     gallery: [
-      "/galeria/WhatsApp Image 2024-10-02 at 2.20.33 PM.jpeg", // Foto reciente
-      "/galeria/20210909_161536.jpg" // Foto de taller
+      "/galeria/20210909_161536.jpg",
+      "/galeria/20210909_161739.jpg"
     ]
   },
   {
@@ -26,13 +25,12 @@ export const programsData = [
     shortDesc: "Danzas, gimnasio, pintura, cocina y juegos tradicionales.",
     icon: Palette,
     color: "#d97706",
-    // Foto HDR vibrante al aire libre/actividad
     heroImage: "/galeria/20211120_111728_HDR.jpg", 
     longDesc: "Fortalecemos competencias comunicativas y emocionales a través de la estética y el movimiento. Incluye danzas folclóricas, gimnasio para activación motriz, pintura en tela y espacios de juegos tradicionales.",
     stats: [
-      { number: "100%", label: "Activación Motriz" },
-      { number: "5", label: "Disciplinas Activas" },
-      { number: "Permanente", label: "Disponibilidad Gimnasio" }
+      { number: "100%", label: "Activación motriz" },
+      { number: "5", label: "Disciplinas activas" },
+      { number: "Permanente", label: "Disponibilidad gimnasio" }
     ],
     gallery: [
       "/galeria/20210503_230137.jpg", 
@@ -45,36 +43,34 @@ export const programsData = [
     shortDesc: "Reconstrucción del tejido afectivo mediante celebraciones conjuntas.",
     icon: Users,
     color: "#16a34a",
-    // LA foto de Navidad (24 dic) es perfecta aquí
     heroImage: "/galeria/20211224_163500_HDR.jpg", 
     longDesc: "Impulsamos el fortalecimiento de las relaciones familiares y la integración con el adulto mayor. Realizamos salidas pedagógicas, celebraciones de fechas especiales y cenas de integración.",
     stats: [
-      { number: "200", label: "Participantes Totales" },
-      { number: "3", label: "Cenas Anuales" },
-      { number: "5", label: "Eventos Masivos" }
+      { number: "200", label: "Participantes totales" },
+      { number: "3", label: "Cenas anuales" },
+      { number: "5", label: "Eventos masivos" }
     ],
     gallery: [
       "/galeria/20211120_133951_HDR.jpg", 
-      "/galeria/WhatsApp Image 2024-10-27 at 1.28.39 PM.jpeg" // Foto reciente familiar
+      "/galeria/20211120_132956_HDR.jpg"
     ]
   },
   {
     id: 'bienestar-integral',
     title: "Bienestar Integral",
-    shortDesc: "Hábitos saludables, alfabetización, finanzas y servicio de Hogar de Paso.",
+    shortDesc: "Hábitos saludables, alfabetización, finanzas y enseñanza de manejo de equipos tecnologicos y redes sociales.",
     icon: Sun,
     color: "#0284c7",
-    // Foto general de bienestar
     heroImage: "/galeria/20211121_130107_HDR.jpg", 
-    longDesc: "Promovemos la autonomía y calidad de vida. Ofrecemos formación en hábitos de alimentación, alfabetización y manejo de finanzas personales. Incluye el servicio de 'Hogar de Paso'.",
+    longDesc: "Promovemos la autonomía y calidad de vida. Ofrecemos formación en hábitos de alimentación, alfabetización y manejo de finanzas personales. Incluye el servicio de 'centro dia para adultos'.",
     stats: [
       { number: "20", label: "Cupos Hogar de Paso" },
-      { number: "80%", label: "Nivel de Satisfacción" },
-      { number: "2", label: "Sesiones Semanales" }
+      { number: "80%", label: "Nivel de satisfacción" },
+      { number: "2", label: "Sesiones semanales" }
     ],
     gallery: [
-      "/galeria/WhatsApp Image 2024-10-02 at 2.20.48 PM.jpeg",
-      "/galeria/20210503_232548.jpg"
+      "/galeria/20210503_232548.jpg",
+      "/galeria/20211121_131215_HDR.jpg"
     ]
   },
   {
@@ -83,35 +79,33 @@ export const programsData = [
     shortDesc: "Prevención y atención: Medicina general, salud oral y visual.",
     icon: Stethoscope,
     color: "#7c3aed",
-    // Usamos esta foto que parece ser un registro/actividad puntual
     heroImage: "/galeria/IMG20250805144021 (1).jpg", 
     longDesc: "Mitigamos riesgos de enfermedad mediante jornadas de salud visual, medicina general y salud oral. Ofrecemos también consultorio jurídico de primera instancia.",
     stats: [
       { number: "100", label: "Atenciones/Brigada" },
-      { number: "4", label: "Tipos de Servicios" },
-      { number: "10", label: "Brigadas Médicas" }
+      { number: "4", label: "Tipos de servicios" },
+      { number: "10", label: "Brigadas médicas" }
     ],
     gallery: [
-      "/galeria/WhatsApp Image 2024-10-02 at 2.20.50 PM (1).jpeg", // Foto reciente
-      "/galeria/20210503_205438.jpg"
+      "/galeria/20210503_205438.jpg",
+      "/galeria/20211120_111849_HDR.jpg"
     ]
   },
   {
     id: 'cuidadores',
     title: "Escuela de Cuidadores",
     shortDesc: "Prevención del síndrome de burnout y herramientas de autocuidado.",
-    icon: HandHeart,
+    icon: HeartHandshake,
     color: "#db2777",
-    // Foto de grupo en espacio interior
     heroImage: "/galeria/20210909_163513.jpg", 
     longDesc: "Cuidar a quien cuida. Fortalecemos las competencias de los cuidadores mediante talleres sobre el síndrome de burnout, autocuidado y espacios de esparcimiento.",
     stats: [
       { number: "25", label: "Cuidadores/Grupo" },
-      { number: "1", label: "Sesión Semanal" },
-      { number: "100%", label: "Apoyo Psicosocial" }
+      { number: "1", label: "Sesión semanal" },
+      { number: "100%", label: "Apoyo psicosocial" }
     ],
     gallery: [
-      "/galeria/WhatsApp Image 2024-10-27 at 1.28.23 PM (1).jpeg",
+      "/galeria/20210909_163516.jpg",
       "/galeria/20210909_163603.jpg"
     ]
   }

@@ -215,15 +215,13 @@ const OfficialServices = () => {
                 </div>
                 <h3 className="text-xl font-bold text-blue-900">Centro Integral (Hogar de Paso)</h3>
               </div>
-              <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                Ubicado en <strong>Barrio Castilla (Calle 8 No. 73-11)</strong>. Brindamos alojamiento temporal y alimentación.
-              </p>
+             
               <div className="mb-4">
                 <h4 className="text-sm font-bold text-blue-900 mb-2">Criterios de Ingreso:</h4>
                 <ul className="text-sm text-gray-600 space-y-2 list-disc pl-5">
                   <li>Adultos mayores rescatados de calle.</li>
                   <li>Casos de desplazamiento forzado.</li>
-                  <li>Apoyo durante citas o tratamientos médicos.</li>
+                  <li>Apoyo a adultos mayores campesinos .</li>
                   <li>Hospitalización de un familiar cuidador.</li>
                 </ul>
               </div>
@@ -238,11 +236,9 @@ const OfficialServices = () => {
                 <h3 className="text-xl font-bold text-blue-900">Turismo Social y Recreación</h3>
               </div>
               <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                Realizamos salidas de integración para fortalecer el tejido social, como el <strong>Tour a la Costa Atlántica</strong> y pasadías en Melgar.
-              </p>
-              <div className="bg-white border border-gray-100 p-3 rounded text-sm text-gray-700 shadow-sm">
-                <strong className="text-blue-900">Actividades incluidas:</strong> Transporte especializado, alimentación típica, caminatas ecológicas y espacios de reflexión espiritual .
-              </div>
+               Realizamos salidas de integración para fortalecer el tejido social,<strong> visitas a museos, zoológicos, espacios culturales y plazas. También llevamos a cabo salidas pedagógicas a diferentes lugares turísticos del país, como Melgar, Girardot, Villeta, Choachí, la Costa Atlántica y la Costa Pacífica.  </strong>
+               </p>
+              
             </div>
 
           </div>

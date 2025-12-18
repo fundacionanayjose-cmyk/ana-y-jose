@@ -3,13 +3,10 @@ import { Phone } from 'lucide-react';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import About from './About';
-// 1. IMPORTAMOS LOS COMPONENTES PERDIDOS
 import History from './History'; 
 import ImpactMap from './ImpactMap';
 import ParallaxBanner from './ParallaxBanner';
 import OfficialServices from './OfficialServices';
-// (Fin de nuevos imports)
-
 import SponsorSection from './SponsorSection';
 import Team from './Team';
 import Programs from './Programs';
@@ -37,7 +34,6 @@ const Home = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Funciones de modales
   const openGeneralForm = () => {
     setFormBeneficiaryName(null);
     setIsFormModalOpen(true);
@@ -48,62 +44,85 @@ const Home = () => {
     setIsDetailModalOpen(true);
   };
 
-  const handleSponsorFromDetail = (abuelo) => {
-    setIsDetailModalOpen(false);
-    setFormBeneficiaryName(abuelo.nombre);
-    setTimeout(() => setIsFormModalOpen(true), 300);
-  };
-
   return (
-    <div className="font-sans text-gray-800 bg-stone-50 overflow-x-hidden relative">
+    <div className="font-sans antialiased text-gray-900 bg-white selection:bg-rose-100 selection:text-rose-900">
       
-      <Modal 
-        isOpen={isFormModalOpen} 
-        onClose={() => setIsFormModalOpen(false)} 
-        preSelectedBeneficiary={formBeneficiaryName} 
-      />
-
-      <BeneficiaryDetailModal 
-        isOpen={isDetailModalOpen}
-        onClose={() => setIsDetailModalOpen(false)}
-        abuelo={selectedAbuelo}
-        onSponsor={handleSponsorFromDetail}
-      />
-      
-      <a href="https://wa.me/573145520393" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-transform hover:scale-110 flex items-center gap-2 group animate-bounce-slow"><Phone className="w-6 h-6 fill-current" /><span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap font-bold">¡Hablemos!</span></a>
+      {/* Botón flotante de WhatsApp */}
+      <a 
+        href="https://wa.me/573145520393" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-transform hover:scale-110 flex items-center gap-2 group animate-bounce-slow"
+      >
+        <Phone className="w-6 h-6 fill-current" />
+        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap font-bold">
+          ¡Hablemos!
+        </span>
+      </a>
       
       <Navbar scrolled={scrolled} logoUrl={logoUrl} onOpenModal={openGeneralForm} />
+      
+      {/* Sección INICIO (Controlada por scroll to top del router) */}
       <Hero onPrimaryAction={openGeneralForm} />
       
-      <About />
-      
-      {/* 2. AQUÍ AGREGAMOS LA HISTORIA DESPUÉS DE "NOSOTROS" */}
-      <History /> 
+      {/* Sección NOSOTROS (About + History) */}
+      <section id="nosotros" className="scroll-mt-24">
+        <About />
+        <History />
+      </section>
 
-      {/* 3. AQUÍ AGREGAMOS EL MAPA */}
+      {/* Mapa fuera de sección nosotros pero parte del bloque informativo */}
       <ImpactMap />
 
       <SponsorSection onOpenModal={openBeneficiaryDetail} />
       
-      {/* 4. AQUÍ ESTÁ LA CORRECCIÓN: AGREGAMOS PROPS AL BANNER PARA EVITAR EL ERROR 404 */}
       <ParallaxBanner 
         image="/galeria/20210503_205438.jpg" 
-        quote="El envejecimiento no es juventud perdida, sino una nueva etapa de oportunidad y fuerza." 
+        quote="El amor es el único tesoro que se multiplica al dividirlo."
       />
 
-      <Team />
-      <Programs />
-
-      {/* 5. SERVICIOS OFICIALES DESPUÉS DE PROGRAMAS */}
       <OfficialServices />
+
+      {/* Sección PROGRAMAS */}
+      <section id="programas" className="scroll-mt-24">
+        <Programs />
+      </section>
 
       <Gallery />
       <Testimonials />
       <Partners />
-      <Transparency />
+      
+      {/* Sección EQUIPO */}
+      <section id="equipo" className="scroll-mt-24">
+        <Team />
+      </section>
+
+      {/* Sección TRANSPARENCIA */}
+      <section id="transparencia" className="scroll-mt-24">
+        <Transparency />
+      </section>
+
       <Donation />
       <Footer logoUrl={logoUrl} />
+
+      {/* MODALES */}
+      <Modal 
+        isOpen={isFormModalOpen} 
+        onClose={() => setIsFormModalOpen(false)} 
+        initialBeneficiary={formBeneficiaryName} 
+      />
+
+      <BeneficiaryDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        beneficiary={selectedAbuelo}
+        onDonate={() => {
+          setIsDetailModalOpen(false);
+          openGeneralForm();
+        }}
+      />
     </div>
   );
 };
+
 export default Home;
